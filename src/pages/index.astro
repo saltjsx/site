@@ -1,11 +1,29 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navbar from "../components/Navbar.astro";
+import "../styles/globals.css";
+import { Image } from "astro:assets";
+import saltRed from "../assets/salt red.png";
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<Navbar />
+
+<main class="page-wrap">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__card glass-strong card hero-in">
+        <p class="definition fade-in-delayed">zout -&gt; salt</p>
+        <Image
+          src={saltRed}
+          alt="Salt Logo"
+          width={120}
+          height={120}
+          class="content-logo float-in"
+          draggable={false}
+        />
+        <h1 class="title pop-in">salt</h1>
+        <h2 class="subtitle fade-in">hello, world</h2>
+        <p class="body-text fade-in">i'm just a nerdy guy who likes software</p>
+      </div>
+    </div>
+  </section>
+</main>

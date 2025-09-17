@@ -117,6 +117,10 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   gap: 8px;
   text-align: center;
   padding: clamp(14px, 2.5vw, 24px);
+  /* Let the glass card shrink-wrap to content with a sensible cap */
+  width: fit-content;
+  max-width: min(56ch, 100%);
+  margin-inline: auto;
 }
 .definition { color: rgb(var(--text-1)); font-style: italic; opacity: .85; }
 .content-logo { display: block; image-rendering: auto; width: clamp(72px, 10vw, 96px); height: auto; }

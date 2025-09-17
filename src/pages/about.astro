@@ -1,0 +1,47 @@
+---
+import "../styles/globals.css";
+import Navbar from "../components/Navbar.astro";
+import saltRed from "../assets/salt red.png";
+import { Image } from "astro:assets";
+import imageOfPerth from "../assets/imageofperth.png";
+---
+
+<head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <link rel="icon" type="image/png" href={saltRed.src} />
+  <link rel="shortcut icon" type="image/png" href={saltRed.src} />
+  <link rel="apple-touch-icon" href={saltRed.src} />
+</head>
+
+<Navbar />
+
+<main class="page-wrap">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__card glass-strong card hero-in">
+        <h1 class="title pop-in">about me</h1>
+        <p class="body-text fade-in">
+          hey there! i'm salt, a software dev from australia. i love coding,
+          design, and public transit. i made this website using astro, and it's
+          hosted on vercel.
+        </p>
+        <p class="body-text fade-in">
+          i love helping people out and making random stuff. if you want to dm
+          me, check out my <a href="/links">links page.</a>
+        </p>
+        <p class="body-text fade-in">
+          i enjoy playing minecraft, roblox, kerbal space program and other
+          friendslop games. i also enjoy watching and making youtube videos.
+        </p>
+        <Image
+          src={imageOfPerth}
+          alt="Skyline view of Perth, Australia"
+          class="about-image"
+        />
+      </div>
+    </div>
+  </section>
+</main>

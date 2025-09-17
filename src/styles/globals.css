@@ -38,6 +38,7 @@ body {
   background-attachment: fixed;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.6;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Glass utilities */
@@ -60,6 +61,7 @@ body {
 a { color: rgb(var(--text-0)); text-decoration: none; }
 a:hover { color: rgb(var(--text-0)); }
 :focus-visible { outline: none; box-shadow: var(--ring); border-radius: 8px; }
+button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
 /* Layout helpers */
 .page-wrap {
@@ -81,6 +83,7 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
+  max-width: 100%;
 }
 .card::before {
   content: "";
@@ -181,6 +184,8 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   width: min(820px, 92%);
   opacity: 0; /* entrance animation */
   animation: navbar-in 600ms cubic-bezier(.2,.7,.1,1) 120ms both;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 .navbar__inner {
   display: flex;
@@ -224,6 +229,9 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   padding: 2px;
   list-style: none;
   border-radius: var(--radius-pill);
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .navbar__item { list-style: none; }
 .navbar__link {
@@ -287,10 +295,119 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
 
 /* Mobile adjustments */
 @media (max-width: 720px) {
-  .navbar { width: min(680px, 94%); bottom: 10px; }
-  .navbar__menu { gap: 2px; padding: 2px; }
-  .navbar__link { padding: 8px 10px; }
+  body { background-attachment: scroll; }
+  .page-wrap { grid-template-rows: 1fr auto; }
+  .container { width: min(680px, 92%); }
+  .hero { padding: min(8vh, 64px) 0 min(18vh, 140px); }
+  .hero__card { gap: 8px; padding: 16px; }
+  .content-logo { width: clamp(72px, 18vw, 110px); height: auto; }
+  .subtitle { font-size: 1rem; }
+  .body-text { font-size: .95rem; }
+
+  .navbar { 
+    width: min(680px, 94%); 
+    bottom: calc(10px + env(safe-area-inset-bottom)); 
+    /* For mobile overlay when menu is open */
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Show hamburger button on mobile */
+  .navbar__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 60;
+  }
+  
+  /* Style hamburger bars */
+  .navbar__toggle-bar {
+    transition: all 0.3s ease;
+  }
+  
+  /* Animate hamburger to X when open */
+  .navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(1) {
+    transform: translateY(5px) rotate(45deg);
+  }
+  .navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .navbar__toggle[aria-expanded="true"] .navbar__toggle-bar:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+  
+  /* Mobile menu layout - ensure proper positioning */
+  .navbar__inner {
+    position: relative;
+    /* Ensure inner container stacks properly */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1; /* keep above navbar ring */
+  }
+  
+  .navbar__menu-wrapper {
+    /* Hide menu by default on mobile; open above bottom-fixed navbar */
+    position: absolute;
+    bottom: calc(100% + 12px);
+    top: auto;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(0.2, 0.7, 0.1, 1);
+    z-index: 200; /* above navbar and ring */
+    /* Ensure it doesn't interfere with desktop layout */
+    flex: none;
+    justify-content: flex-start;
+  }
+  
+  /* Show menu when open */
+  .navbar__menu-wrapper.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .navbar__menu {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+  }
+  
+  .navbar__link { 
+    padding: 12px 16px; 
+    min-height: 44px;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Add backdrop when menu is open */
+  body.navbar-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+    animation: backdrop-in 0.3s ease;
+  }
+  
+  @keyframes backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 }
+
+/* Ensure images never overflow containers */
+img, svg, video { max-width: 100%; height: auto; }
 
 /* Keyframes */
 @keyframes navbar-in {
@@ -308,4 +425,37 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   .navbar { animation: none; opacity: 1; }
   .navbar::after { animation: none; }
   .navbar__link::after { transition: none; }
+  .navbar__toggle-bar { transition: none !important; }
+  .navbar__menu-wrapper { transition: none !important; }
+  body.navbar-open::before { animation: none !important; }
+}
+
+/* Ensure desktop layout is preserved at larger screens */
+@media (min-width: 721px) {
+  .navbar__toggle {
+    display: none !important;
+  }
+  
+  .navbar__menu-wrapper {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .navbar__menu {
+    flex-direction: row !important;
+    gap: 4px !important;
+    padding: 2px !important;
+    width: auto !important;
+  }
+  
+  .navbar__link {
+    padding: 8px 12px !important;
+    width: auto !important;
+    justify-content: center !important;
+  }
 }

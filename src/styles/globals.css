@@ -23,6 +23,9 @@
   --blur-2: 22px;
 
   --ring: 0 0 0 1.5px rgb(var(--accent-1) / .7);
+
+  /* Reserve space where the fixed navbar floats so content fits onscreen */
+  --nav-space: clamp(60px, 8vh, 96px);
 }
 
 /* Global reset and typography */
@@ -65,9 +68,9 @@ button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation
 
 /* Layout helpers */
 .page-wrap {
-  min-height: 100dvh;
+  min-height: 100svh;
   display: grid;
-  grid-template-rows: 1fr auto; /* content then navbar */
+  grid-template-rows: auto; /* natural flow; navbar is fixed */
 }
 .container {
   width: min(1100px, 90%);
@@ -75,8 +78,8 @@ button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation
 }
 
 /* Headings */
-h1 { font-size: clamp(2rem, 1.5rem + 2vw, 4rem); letter-spacing: -0.02em; }
-h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
+h1 { font-size: clamp(1.8rem, 1.4rem + 1.8vw, 3.6rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)); }
 
 /* Fancy glass cards */
 .card {
@@ -104,19 +107,21 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
 .hero {
   display: grid;
   place-items: center;
-  padding: min(12vh, 120px) 0 min(22vh, 200px);
+  /* Fill the viewport; navbar is overlayed */
+  min-height: 100svh;
+  padding: clamp(8px, 2vh, 20px) 0 clamp(10px, 2vh, 16px);
 }
 .hero__card {
   display: grid;
   justify-items: center;
-  gap: 10px;
+  gap: 8px;
   text-align: center;
-  padding: clamp(18px, 3vw, 32px);
+  padding: clamp(14px, 2.5vw, 24px);
 }
 .definition { color: rgb(var(--text-1)); font-style: italic; opacity: .85; }
-.content-logo { display: block; image-rendering: auto; }
+.content-logo { display: block; image-rendering: auto; width: clamp(72px, 10vw, 96px); height: auto; }
 .title {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   background: linear-gradient(120deg,
     rgb(var(--accent-1)) 0%,
     rgb(var(--accent-2)) 50%,
@@ -131,7 +136,30 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   filter: drop-shadow(0 2px 18px rgb(var(--accent-1) / .18));
 }
 .subtitle { margin: 2px 0 4px; }
-.body-text { margin: 4px 0 0; color: rgb(var(--text-1)); }
+.body-text { margin: 2px 0 0; color: rgb(var(--text-1)); }
+
+/* Tech grid */
+.tech-grid {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap; /* avoid horizontal scrolling */
+  justify-content: center;
+  overflow-x: visible;
+}
+.tech-chip {
+  display: grid;
+  place-items: center;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  flex: 0 0 auto;
+}
+.tech-icon {
+  width: clamp(20px, 4vw, 32px);
+  height: clamp(20px, 4vw, 32px);
+  background-color: rgb(var(--accent-1));
+  display: inline-block;
+}
 
 /* Subtle glossy highlight on hero card */
 .hero__card::before {
@@ -179,7 +207,7 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 14px;
+  bottom: 10px;
   width: min(820px, 92%);
   margin: 0 auto;
   z-index: 50;
@@ -193,14 +221,14 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: var(--radius-pill);
 }
 .navbar__brand {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: var(--radius-pill);
 }
 .navbar__logo { border-radius: 0; box-shadow: none; }
@@ -234,7 +262,7 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: var(--radius-pill);
   color: rgb(var(--text-0));
   transition: background-color .2s ease, color .2s ease, transform .2s ease;
@@ -251,11 +279,18 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
 .navbar__link:active { transform: translateY(1px); }
 
 /* Brand hover/active to match nav links */
-.navbar__brand.glass:hover { background: rgb(var(--glass) / .10); }
-.navbar__brand.glass:active { transform: translateY(1px); }
+.navbar__brand:hover { background: rgb(var(--glass) / .08); }
+.navbar__brand:active { transform: translateY(1px); }
 
 /* Apply glass to specific navbar layers */
-.navbar__inner { background: rgb(var(--glass) / .08); backdrop-filter: blur(var(--blur-2)) saturate(150%); -webkit-backdrop-filter: blur(var(--blur-2)) saturate(150%); border: 1px solid rgb(var(--glass) / .18); box-shadow: var(--shadow-2); }
+.navbar__inner {
+  background: rgb(var(--glass) / .12);
+  border: 1px solid rgb(var(--glass) / .20);
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(var(--blur-2)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur-2)) saturate(150%);
+  transition: background-color .25s ease, border-color .25s ease, backdrop-filter .25s ease, -webkit-backdrop-filter .25s ease;
+}
 .navbar__menu { background: rgb(var(--glass) / .05); border: 1px solid rgb(var(--glass) / .14); }
 
 /* Accent gradient ring around the navbar */
@@ -299,11 +334,11 @@ h2 { font-size: clamp(1.3rem, 1rem + 1vw, 2rem); color: rgb(var(--text-1)); }
 /* Mobile adjustments */
 @media (max-width: 720px) {
   body { background-attachment: scroll; }
-  .page-wrap { grid-template-rows: 1fr auto; }
+  .page-wrap { grid-template-rows: auto; }
   .container { width: min(680px, 92%); }
-  .hero { padding: min(8vh, 64px) 0 min(18vh, 140px); }
+  .hero { min-height: 100svh; padding: 12px 0 16px; }
   .hero__card { gap: 8px; padding: 16px; }
-  .content-logo { width: clamp(72px, 18vw, 110px); height: auto; }
+  .content-logo { width: clamp(68px, 16vw, 96px); height: auto; }
   .subtitle { font-size: 1rem; }
   .body-text { font-size: .95rem; }
 

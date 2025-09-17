@@ -1,6 +1,7 @@
 (function () {
   var toggleBtn = document.querySelector(".navbar__toggle");
   var menuWrapper = document.getElementById("navbar-menu");
+  var navbar = document.querySelector(".navbar");
   if (!toggleBtn || !menuWrapper) return;
 
   // Helper to check if toggle button is visible (mobile only)
@@ -79,4 +80,14 @@
   window.addEventListener("resize", enforceMenuState);
   // Also run on initial load
   enforceMenuState();
+
+  // Add scroll-activated blur class on the navbar
+  function onScroll() {
+    if (!navbar) return;
+    var scrolled = window.scrollY > 0;
+    navbar.classList.toggle("navbar--scrolled", scrolled);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  // initialize state
+  onScroll();
 })();

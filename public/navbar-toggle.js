@@ -7,6 +7,7 @@
     toggleBtn.setAttribute("aria-expanded", String(open));
     menuWrapper.classList.toggle("is-open", open);
     menuWrapper.setAttribute("aria-hidden", String(!open));
+    document.body.classList.toggle("navbar-open", open);
   }
 
   function onToggle(e) {

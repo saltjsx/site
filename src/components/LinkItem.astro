@@ -18,11 +18,18 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
   target={link.internal ? undefined : "_blank"}
 >
   {
-    link.icon && (
-      <span class="icon" aria-hidden="true">
-        {link.icon}
-      </span>
-    )
+    link.icon &&
+      (typeof link.icon === "string" &&
+      (/(\.(svg|png|jpe?g|webp|gif|ico)$)/i.test(link.icon) ||
+        link.icon.startsWith("/@fs/")) ? (
+        <span class="icon icon--img" aria-hidden="true">
+          <img src={link.icon} alt="" loading="lazy" decoding="async" />
+        </span>
+      ) : (
+        <span class="icon" aria-hidden="true">
+          {typeof link.icon === "string" ? link.icon : ""}
+        </span>
+      ))
   }
   <span class="content">
     <span class="title-row">
@@ -100,8 +107,18 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     box-shadow:
       0 4px 14px rgb(0 0 0 / 0.45),
       inset 0 0 0 1px rgb(var(--glass) / 0.3);
-    filter: saturate(115%);
-    position: relative;
+    color: #fff;
+  }
+  .icon--img {
+    padding: 8px;
+  }
+  .icon--img img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* force white */
+    border-radius: 0;
   }
   .icon::after {
     content: "";

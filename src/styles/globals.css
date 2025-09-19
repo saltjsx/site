@@ -463,6 +463,10 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
 /* Ensure images never overflow containers */
 img, svg, video { max-width: 100%; height: auto; }
 
+/* Utility spacing helpers */
+.stack-lg { display: grid; gap: clamp(20px,4vw,46px); }
+.stack-md { display: grid; gap: clamp(14px,3vw,32px); }
+
 /* Keyframes */
 @keyframes navbar-in {
   0% { opacity: 0; transform: translateY(12px) scale(.98); filter: saturate(90%); }

@@ -1,0 +1,62 @@
+---
+import { links } from "../../data/links";
+
+export function getStaticPaths() {
+  return links.map((link) => ({ params: { slug: link.slug } }));
+}
+
+const { slug } = Astro.params;
+const entry = links.find((l) => l.slug === slug);
+if (entry) {
+  return Astro.redirect(entry.url, 302);
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Redirecting...</title>
+    <meta http-equiv="refresh" content="4; url=/links" />
+    <style>
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        display: grid;
+        place-items: center;
+        min-height: 100svh;
+        background: #0d0d12;
+        color: #f5f7fa;
+      }
+      .wrap {
+        text-align: center;
+        max-width: 560px;
+        padding: 40px 24px;
+      }
+      a {
+        color: #fff;
+      }
+      .code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: #1b1f28;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Link Not Found</h1>
+      <p>The slug <span class="code">{slug}</span> does not match any link.</p>
+      <p>You will be sent back shortly. <a href="/links">Return now</a>.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+---
+import "../styles/globals.css";
+import Navbar from "../components/Navbar.astro";
+import saltRed from "../assets/salt red.png";
+---
+
+<head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <link rel="icon" type="image/png" href={saltRed.src} />
+  <link rel="shortcut icon" type="image/png" href={saltRed.src} />
+  <link rel="apple-touch-icon" href={saltRed.src} />
+  <title>salt - about</title>
+</head>
+
+<Navbar />
+
+<main class="page-wrap">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__card glass-strong card hero-in">
+        <h1 class="title pop-in">portfolio</h1>
+        <p class="body-text fade-in">coming soon...</p>
+      </div>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,199 @@
+---
+import type { LinkEntry } from "../data/links";
+
+interface Props {
+  link: LinkEntry;
+}
+
+const { link } = Astro.props as Props;
+// Determine if we should wrap with a redirect (/go/slug) for tracking / uniformity
+// External links go through redirect; internal links can be direct.
+const href = link.internal ? link.url : `/go/${link.slug}`;
+---
+
+<a
+  class="link-item"
+  href={href}
+  rel={link.internal ? undefined : "noopener noreferrer"}
+>
+  {
+    link.icon && (
+      <span class="icon" aria-hidden="true">
+        {link.icon}
+      </span>
+    )
+  }
+  <span class="content">
+    <span class="title-row">
+      <span class="title">{link.title}</span>
+      {
+        !link.internal && (
+          <span class="ext" aria-hidden="true">
+            ↗
+          </span>
+        )
+      }
+    </span>
+    {link.description && <span class="desc">{link.description}</span>}
+  </span>
+</a>
+
+<style>
+  .link-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 20px 22px;
+    position: relative;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(
+      145deg,
+      rgb(var(--glass) / 0.09),
+      rgb(var(--glass) / 0.04)
+    );
+    border: 1px solid rgb(var(--glass) / 0.16);
+    box-shadow:
+      0 2px 6px -1px rgba(0, 0, 0, 0.4),
+      0 4px 22px -4px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(var(--blur-1)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--blur-1)) saturate(140%);
+    transition:
+      transform 0.35s cubic-bezier(0.2, 0.7, 0.1, 1),
+      background 0.4s ease,
+      border-color 0.35s ease,
+      box-shadow 0.4s ease;
+    text-decoration: none;
+    color: rgb(var(--text-0));
+    min-height: 112px;
+    overflow: hidden;
+  }
+  .link-item:hover {
+    transform: translateY(-6px);
+    background: linear-gradient(
+      145deg,
+      rgb(var(--glass) / 0.14),
+      rgb(var(--glass) / 0.06)
+    );
+    border-color: rgb(var(--glass) / 0.28);
+    box-shadow:
+      0 6px 18px -4px rgba(0, 0, 0, 0.55),
+      0 10px 40px -6px rgba(0, 0, 0, 0.6);
+  }
+  .link-item:active {
+    transform: translateY(-2px);
+  }
+
+  .icon {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      140deg,
+      rgb(var(--accent-2)),
+      rgb(var(--accent-1))
+    );
+    box-shadow:
+      0 4px 14px rgb(0 0 0 / 0.45),
+      inset 0 0 0 1px rgb(var(--glass) / 0.3);
+    filter: saturate(115%);
+    position: relative;
+  }
+  .icon::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at 30% 25%,
+      rgb(var(--glass) / 0.35),
+      transparent 65%
+    );
+    mix-blend-mode: overlay;
+    opacity: 0.7;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .title {
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    font-size: 1.05rem;
+  }
+  .ext {
+    font-size: 0.9rem;
+    opacity: 0.75;
+  }
+  .desc {
+    color: rgb(var(--text-1));
+    font-size: 0.83rem;
+    line-height: 1.4;
+    max-width: 40ch;
+  }
+
+  /* subtle decorative glow */
+  .link-item::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        600px 300px at 0% 0%,
+        rgb(var(--accent-1) / 0.18),
+        transparent 70%
+      ),
+      radial-gradient(
+        800px 400px at 100% 100%,
+        rgb(var(--accent-2) / 0.18),
+        transparent 75%
+      );
+    opacity: 0.45;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .link-item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      rgb(var(--accent-1) / 0.25),
+      transparent 40%,
+      transparent 60%,
+      rgb(var(--accent-2) / 0.25)
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .link-item:hover::after {
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .link-item {
+      padding: 16px 18px;
+      gap: 14px;
+      min-height: 100px;
+    }
+    .icon {
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+    .desc {
+      font-size: 0.78rem;
+    }
+  }
+</style>

@@ -30,14 +30,14 @@ export const links: LinkEntry[] = [
     icon: "🐙"
   },
   {
-    slug: "x",
-    url: "https://x.com/",
+    slug: "twitter",
+    url: "https://x.com/saltjsx",
     title: "Twitter",
     description: "idk follow me i guess",
     icon: "🐦"
   },
   {
-    slug: "yt",
+    slug: "youtube",
     url: "https://youtube.com/@saltjsx",
     title: "YouTube",
     description: "i make videos(sometimes)",

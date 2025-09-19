@@ -22,9 +22,16 @@ import LinksList from "../components/LinksList.astro";
 <main class="page-wrap">
   <section class="hero">
     <div class="container">
-      <div class="hero__card glass-strong card hero-in links-card">
-        <h1 class="title pop-in">links</h1>
-        <p class="body-text fade-in">Find me & my work around the web</p>
+      <div
+        class="hero__card glass-strong card anim-fade-scale anim-base links-card"
+        style="--delay:140ms"
+      >
+        <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
+          links
+        </h1>
+        <p class="body-text anim-fade anim-base" style="--delay:260ms">
+          Find me & my work around the web
+        </p>
         <div class="links-card-grid">
           <LinksList />
         </div>

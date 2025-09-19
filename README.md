@@ -85,3 +85,43 @@ Currently `icon` supports:
 ### Tracking / Analytics
 
 Because external links route through `/go/<slug>`, you can later add basic logging or analytics inside `src/pages/go/[slug].astro` before redirecting.
+
+---
+
+## 🎞 Motion & Animation System
+
+The site uses a unified, tokenized motion layer (see `globals.css`) to keep animations subtle and consistent.
+
+### Tokens
+
+Defined in `:root`:
+
+- Durations: `--motion-duration-{xs,sm,md,lg}` = 120–420ms
+- Easing: `--motion-ease-standard`, `--motion-ease-emphasized`, `--motion-ease-in`, `--motion-ease-out`
+- Stagger interval: `--stagger-interval`
+
+### Utility Classes
+
+- `anim-base` – establishes initial opacity 0 + will-change
+- `anim-fade` – fades in
+- `anim-fade-up` – fade + upward translate (10px)
+- `anim-fade-scale` – fade + slight translate + micro scale
+- `stagger-fade-up` – apply to a parent; its direct children get sequential delays (up to first 10)
+
+Add a custom delay via inline style: `style="--delay:300ms"` on an element with an `anim-*` class.
+
+### Hover / Interaction
+
+Component transitions use tokenized durations and eased transforms (mild elevation: translateY(-4px)).
+
+### Reduced Motion
+
+`@media (prefers-reduced-motion: reduce)` disables all entrance animations and resets opacity.
+
+### Gradient / Continuous Motion
+
+Long-running gradient animations slowed (`--gradient-duration: 16s`) for calmer feel.
+
+### Adding a New Pattern
+
+Prefer composing with existing keyframes. If truly new, add a keyframe + corresponding utility under the unified section. Avoid per-component bespoke keyframes.

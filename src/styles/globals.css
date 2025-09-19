@@ -26,6 +26,18 @@
 
   /* Reserve space where the fixed navbar floats so content fits onscreen */
   --nav-space: clamp(60px, 8vh, 96px);
+  
+  /* Motion tokens */
+  --motion-duration-xs: 120ms;
+  --motion-duration-sm: 180ms;
+  --motion-duration-md: 260ms;
+  --motion-duration-lg: 420ms;
+  --motion-ease-standard: cubic-bezier(.4, 0, .2, 1);
+  --motion-ease-emphasized: cubic-bezier(.32, .72, .15, 1);
+  --motion-ease-in: cubic-bezier(.4, 0, 1, 1);
+  --motion-ease-out: cubic-bezier(0, 0, .2, 1);
+  --stagger-interval: 70ms;
+  --gradient-duration: 16s;
 }
 
 /* Global reset and typography */
@@ -173,27 +185,28 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   pointer-events: none;
 }
 
-/* Animations */
-.hero-in { animation: hero-in 700ms cubic-bezier(.2,.7,.1,1) 140ms both; }
-.fade-in { animation: fade-in 700ms ease 260ms both; }
-.fade-in-delayed { animation: fade-in 700ms ease 420ms both; }
-.pop-in { animation: pop-in 700ms cubic-bezier(.2,.7,.1,1) 300ms both; }
-.float-in { animation: float-in 800ms cubic-bezier(.2,.7,.1,1) 180ms both; }
+/* Unified animation utilities */
+.anim-base { opacity: 0; will-change: transform, opacity; animation-fill-mode: both; }
+.anim-fade { animation: fade-in var(--motion-duration-md) var(--motion-ease-standard) var(--delay,0ms) both; }
+.anim-fade-up { animation: fade-up var(--motion-duration-md) var(--motion-ease-standard) var(--delay,0ms) both; }
+.anim-fade-scale { animation: fade-scale var(--motion-duration-md) var(--motion-ease-emphasized) var(--delay,0ms) both; }
 
-@keyframes hero-in {
-  0% { opacity: 0; transform: translateY(16px) scale(.98); }
-  60% { opacity: 1; transform: translateY(-2px) scale(1.01); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
+/* Stagger utilities (limit to 10 children for now) */
+.stagger-fade-up > * { opacity: 0; animation: fade-up var(--motion-duration-md) var(--motion-ease-standard) both; }
+.stagger-fade-up > *:nth-child(1) { animation-delay: calc(var(--stagger-interval) * 0); }
+.stagger-fade-up > *:nth-child(2) { animation-delay: calc(var(--stagger-interval) * 1); }
+.stagger-fade-up > *:nth-child(3) { animation-delay: calc(var(--stagger-interval) * 2); }
+.stagger-fade-up > *:nth-child(4) { animation-delay: calc(var(--stagger-interval) * 3); }
+.stagger-fade-up > *:nth-child(5) { animation-delay: calc(var(--stagger-interval) * 4); }
+.stagger-fade-up > *:nth-child(6) { animation-delay: calc(var(--stagger-interval) * 5); }
+.stagger-fade-up > *:nth-child(7) { animation-delay: calc(var(--stagger-interval) * 6); }
+.stagger-fade-up > *:nth-child(8) { animation-delay: calc(var(--stagger-interval) * 7); }
+.stagger-fade-up > *:nth-child(9) { animation-delay: calc(var(--stagger-interval) * 8); }
+.stagger-fade-up > *:nth-child(10) { animation-delay: calc(var(--stagger-interval) * 9); }
+
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pop-in {
-  0% { opacity: 0; transform: translateY(6px) scale(.96); filter: blur(2px); }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: none; }
-}
-@keyframes float-in {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+@keyframes fade-up { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes fade-scale { 0% { opacity: 0; transform: translateY(6px) scale(.985); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
 /* Animated gradient for title */
 @keyframes title-gradient {
@@ -202,7 +215,7 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-in, .fade-in, .fade-in-delayed, .pop-in, .float-in { animation: none !important; }
+  .anim-base, .anim-fade, .anim-fade-up, .anim-fade-scale, .stagger-fade-up > * { animation: none !important; opacity: 1 !important; }
   .title { animation: none !important; background-position: 50% 50%; }
 }
 
@@ -215,8 +228,8 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   width: min(820px, 92%);
   margin: 0 auto;
   z-index: 50;
-  opacity: 0; /* entrance animation */
-  animation: navbar-in 600ms cubic-bezier(.2,.7,.1,1) 120ms both;
+  opacity: 0;
+  animation: fade-up var(--motion-duration-md) var(--motion-ease-standard) 140ms both;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
@@ -269,7 +282,7 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   padding: 6px 10px;
   border-radius: var(--radius-pill);
   color: rgb(var(--text-0));
-  transition: background-color .2s ease, color .2s ease, transform .2s ease;
+  transition: background-color var(--motion-duration-sm) var(--motion-ease-standard), color var(--motion-duration-sm) var(--motion-ease-standard), transform var(--motion-duration-xs) var(--motion-ease-out);
   position: relative;
   pointer-events: auto;
 }
@@ -293,7 +306,7 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   box-shadow: var(--shadow-2);
   backdrop-filter: blur(var(--blur-2)) saturate(150%);
   -webkit-backdrop-filter: blur(var(--blur-2)) saturate(150%);
-  transition: background-color .25s ease, border-color .25s ease, backdrop-filter .25s ease, -webkit-backdrop-filter .25s ease;
+  transition: background-color var(--motion-duration-sm) var(--motion-ease-standard), border-color var(--motion-duration-sm) var(--motion-ease-standard), backdrop-filter var(--motion-duration-sm) var(--motion-ease-standard), -webkit-backdrop-filter var(--motion-duration-sm) var(--motion-ease-standard);
 }
 .navbar__menu { background: rgb(var(--glass) / .05); border: 1px solid rgb(var(--glass) / .14); }
 
@@ -305,7 +318,7 @@ h2 { font-size: clamp(1.2rem, 0.95rem + 0.9vw, 1.8rem); color: rgb(var(--text-1)
   padding: 1px; /* edge thickness */
   background: linear-gradient(135deg, rgb(var(--accent-1) / .8), rgb(var(--accent-2) / .8));
   background-size: 200% 200%;
-  animation: ring-shimmer 6s ease-in-out infinite alternate;
+  animation: ring-shimmer 14s var(--motion-ease-standard) infinite alternate;
   mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -468,11 +481,6 @@ img, svg, video { max-width: 100%; height: auto; }
 .stack-md { display: grid; gap: clamp(14px,3vw,32px); }
 
 /* Keyframes */
-@keyframes navbar-in {
-  0% { opacity: 0; transform: translateY(12px) scale(.98); filter: saturate(90%); }
-  60% { opacity: 1; transform: translateY(-2px) scale(1.005); }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: none; }
-}
 @keyframes ring-shimmer {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }

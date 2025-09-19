@@ -12,9 +12,10 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
 ---
 
 <a
-  class="link-item"
+  class="link-item anim-base anim-fade-up"
   href={href}
   rel={link.internal ? undefined : "noopener noreferrer"}
+  target={link.internal ? undefined : "_blank"}
 >
   {
     link.icon && (
@@ -59,17 +60,17 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     backdrop-filter: blur(var(--blur-1)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--blur-1)) saturate(140%);
     transition:
-      transform 0.35s cubic-bezier(0.2, 0.7, 0.1, 1),
-      background 0.4s ease,
-      border-color 0.35s ease,
-      box-shadow 0.4s ease;
+      transform var(--motion-duration-md) var(--motion-ease-standard),
+      background var(--motion-duration-md) var(--motion-ease-standard),
+      border-color var(--motion-duration-md) var(--motion-ease-standard),
+      box-shadow var(--motion-duration-lg) var(--motion-ease-standard);
     text-decoration: none;
     color: rgb(var(--text-0));
     min-height: 112px;
     overflow: hidden;
   }
   .link-item:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     background: linear-gradient(
       145deg,
       rgb(var(--glass) / 0.14),
@@ -77,11 +78,11 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     );
     border-color: rgb(var(--glass) / 0.28);
     box-shadow:
-      0 6px 18px -4px rgba(0, 0, 0, 0.55),
-      0 10px 40px -6px rgba(0, 0, 0, 0.6);
+      0 4px 14px -4px rgba(0, 0, 0, 0.55),
+      0 8px 28px -6px rgba(0, 0, 0, 0.6);
   }
   .link-item:active {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
 
   .icon {

@@ -5,8 +5,8 @@ import LinkItem from "./LinkItem.astro";
 // In future we could accept props (filtering, category grouping, etc.)
 ---
 
-<section class="links-section fade-in">
-  <div class="links-grid">
+<section class="links-section anim-fade anim-base" style="--delay:180ms">
+  <div class="links-grid stagger-fade-up">
     {links.map((l) => <LinkItem link={l} />)}
   </div>
 </section>

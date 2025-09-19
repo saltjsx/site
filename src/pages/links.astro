@@ -19,63 +19,47 @@ import LinksList from "../components/LinksList.astro";
 
 <Navbar />
 
-<main class="links-page page-wrap">
-  <header class="links-hero container hero-in">
-    <h1 class="links-title title pop-in">links</h1>
-    <p class="links-tagline body-text fade-in">
-      Find me & my work around the web
-    </p>
-  </header>
-  <LinksList />
+<main class="page-wrap">
+  <section class="hero">
+    <div class="container">
+      <div class="hero__card glass-strong card hero-in links-card">
+        <h1 class="title pop-in">links</h1>
+        <p class="body-text fade-in">Find me & my work around the web</p>
+        <div class="links-card-grid">
+          <LinksList />
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <style>
-  .links-page {
-    display: grid;
-    gap: clamp(30px, 4vh, 60px);
-  }
-  .links-hero {
+  .links-card {
     text-align: center;
-    padding: clamp(40px, 8vh, 120px) 0 0;
-    display: grid;
-    gap: 10px;
-    justify-items: center;
-    position: relative;
+    width: min(1180px, 100%);
   }
-  .links-title {
-    margin: 0;
-  }
-  .links-tagline {
-    margin: 0;
+  .links-card .body-text {
     max-width: 46ch;
+    margin-inline: auto;
   }
-
-  /* subtle ambient glow behind heading */
-  .links-hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        600px 320px at 50% 10%,
-        rgb(var(--accent-1) / 0.18),
-        transparent 70%
-      ),
-      radial-gradient(
-        800px 500px at 50% 60%,
-        rgb(var(--accent-2) / 0.22),
-        transparent 75%
-      );
-    opacity: 0.5;
-    pointer-events: none;
-    mix-blend-mode: screen;
+  .links-card :where(h1, p) {
+    margin-left: auto;
+    margin-right: auto;
   }
-
-  @media (max-width: 640px) {
-    .links-page {
-      gap: 30px;
+  .links-card-grid {
+    width: 100%;
+    margin-top: clamp(34px, 5vh, 60px);
+  }
+  /* Let inner grid stretch without shrinking hero card's centered layout */
+  .links-card-grid :where(.links-section) {
+    width: 100%;
+  }
+  @media (max-width: 720px) {
+    .links-card {
+      padding: 20px 18px;
     }
-    .links-hero {
-      padding-top: clamp(30px, 7vh, 80px);
+    .links-card-grid {
+      margin-top: 28px;
     }
   }
 </style>

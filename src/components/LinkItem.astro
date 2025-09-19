@@ -25,7 +25,7 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
   }
   <span class="content">
     <span class="title-row">
-      <span class="title">{link.title}</span>
+      <span class="title-row">{link.title}</span>
       {
         !link.internal && (
           <span class="ext" aria-hidden="true">
@@ -125,10 +125,11 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     align-items: center;
     gap: 6px;
   }
-  .title {
+  a.link-item .title {
     font-weight: 600;
     letter-spacing: 0.015em;
     font-size: 1.05rem;
+    color: #ffffff !important;
   }
   .ext {
     font-size: 0.9rem;
@@ -139,6 +140,7 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     font-size: 0.83rem;
     line-height: 1.4;
     max-width: 40ch;
+    text-align: left;
   }
 
   /* subtle decorative glow */

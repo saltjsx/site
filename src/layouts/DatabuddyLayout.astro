@@ -1,0 +1,53 @@
+---
+import { Databuddy } from "@databuddy/sdk/react";
+import Navbar from "../components/Navbar.astro";
+import "../styles/globals.css";
+import saltRed from "../assets/salt red.png";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noIndex?: boolean;
+}
+
+const {
+  title = "salt",
+  description = "salt's site",
+  noIndex = false,
+} = Astro.props as Props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" type="image/png" href={saltRed.src} />
+    <link rel="shortcut icon" type="image/png" href={saltRed.src} />
+    <link rel="apple-touch-icon" href={saltRed.src} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+  </head>
+  <body>
+    <Databuddy
+      client:load
+      clientId="rALU52_genirbSWfxdhia"
+      trackHashChanges={true}
+      trackAttributes={true}
+      trackOutgoingLinks={true}
+      trackInteractions={true}
+      trackEngagement={true}
+      trackScrollDepth={true}
+      trackExitIntent={true}
+      trackBounceRate={true}
+      trackWebVitals={true}
+      trackErrors={true}
+      enableBatching={true}
+    />
+    <Navbar />
+    <slot />
+  </body>
+</html>

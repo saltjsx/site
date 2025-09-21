@@ -1,68 +1,40 @@
 ---
-import "../styles/globals.css";
-import Navbar from "../components/Navbar.astro";
-import saltRed from "../assets/salt red.png";
+import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
 import { Image } from "astro:assets";
 import imageOfPerth from "../assets/imageofperth.png";
-import { Databuddy } from "@databuddy/sdk";
 ---
 
-<head>
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <link rel="icon" type="image/png" href={saltRed.src} />
-  <link rel="shortcut icon" type="image/png" href={saltRed.src} />
-  <link rel="apple-touch-icon" href={saltRed.src} />
-  <title>salt - about</title>
-  <Databuddy
-    clientId="rALU52_genirbSWfxdhia"
-    trackHashChanges={true}
-    trackAttributes={true}
-    trackOutgoingLinks={true}
-    trackInteractions={true}
-    trackEngagement={true}
-    trackScrollDepth={true}
-    trackExitIntent={true}
-    trackBounceRate={true}
-    trackWebVitals={true}
-    trackErrors={true}
-    enableBatching={true}
-  />
-</head>
-
-<Navbar />
-
-<main class="page-wrap">
-  <section class="hero">
-    <div class="container">
-      <div
-        class="hero__card glass-strong card anim-fade-scale anim-base"
-        style="--delay:140ms"
-      >
-        <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
-          about me
-        </h1>
-        <p class="body-text anim-fade anim-base" style="--delay:260ms">
-          hey there! i'm salt, a software dev from australia. i love coding,
-          design, and public transit. i made this website using astro, and it's
-          hosted on vercel.
-        </p>
-        <p class="body-text anim-fade anim-base" style="--delay:300ms">
-          i love helping people out and making random stuff. if you want to dm
-          me, check out my <a href="/links">links page.</a>
-        </p>
-        <p class="body-text anim-fade anim-base" style="--delay:340ms">
-          i enjoy playing minecraft, roblox, kerbal space program and other
-          friendslop games. i also enjoy watching and making youtube videos.
-        </p>
-        <Image
-          src={imageOfPerth}
-          alt="Skyline view of Perth, Australia"
-          class="about-image"
-        />
+<DatabuddyLayout title="salt - about" description="About salt">
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="container">
+        <div
+          class="hero__card glass-strong card anim-fade-scale anim-base"
+          style="--delay:140ms"
+        >
+          <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
+            about me
+          </h1>
+          <p class="body-text anim-fade anim-base" style="--delay:260ms">
+            hey there! i'm salt, a software dev from australia. i love coding,
+            design, and public transit. i made this website using astro, and
+            it's hosted on vercel.
+          </p>
+          <p class="body-text anim-fade anim-base" style="--delay:300ms">
+            i love helping people out and making random stuff. if you want to dm
+            me, check out my <a href="/links">links page.</a>
+          </p>
+          <p class="body-text anim-fade anim-base" style="--delay:340ms">
+            i enjoy playing minecraft, roblox, kerbal space program and other
+            friendslop games. i also enjoy watching and making youtube videos.
+          </p>
+          <Image
+            src={imageOfPerth}
+            alt="Skyline view of Perth, Australia"
+            class="about-image"
+          />
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
+</DatabuddyLayout>

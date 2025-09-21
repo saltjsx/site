@@ -1,51 +1,23 @@
 ---
-import "../styles/globals.css";
-import Navbar from "../components/Navbar.astro";
-import saltRed from "../assets/salt red.png";
-import { Databuddy } from "@databuddy/sdk";
+import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
 ---
 
-<head>
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <link rel="icon" type="image/png" href={saltRed.src} />
-  <link rel="shortcut icon" type="image/png" href={saltRed.src} />
-  <link rel="apple-touch-icon" href={saltRed.src} />
-  <title>salt - about</title>
-  <Databuddy
-    clientId="rALU52_genirbSWfxdhia"
-    trackHashChanges={true}
-    trackAttributes={true}
-    trackOutgoingLinks={true}
-    trackInteractions={true}
-    trackEngagement={true}
-    trackScrollDepth={true}
-    trackExitIntent={true}
-    trackBounceRate={true}
-    trackWebVitals={true}
-    trackErrors={true}
-    enableBatching={true}
-  />
-</head>
-
-<Navbar />
-
-<main class="page-wrap">
-  <section class="hero">
-    <div class="container">
-      <div
-        class="hero__card glass-strong card anim-fade-scale anim-base"
-        style="--delay:140ms"
-      >
-        <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
-          portfolio
-        </h1>
-        <p class="body-text anim-fade anim-base" style="--delay:260ms">
-          coming soon...
-        </p>
+<DatabuddyLayout title="salt - portfolio" description="salt's projects">
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="container">
+        <div
+          class="hero__card glass-strong card anim-fade-scale anim-base"
+          style="--delay:140ms"
+        >
+          <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
+            portfolio
+          </h1>
+          <p class="body-text anim-fade anim-base" style="--delay:260ms">
+            coming soon...
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
+</DatabuddyLayout>

@@ -1,70 +1,43 @@
 ---
-import Navbar from "../components/Navbar.astro";
+import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
 import Techiuse from "../components/Techiuse.astro";
-import "../styles/globals.css";
 import { Image } from "astro:assets";
 import saltRed from "../assets/salt red.png";
-import { Databuddy } from "@databuddy/sdk";
 ---
 
-<head>
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <link rel="icon" type="image/png" href={saltRed.src} />
-  <link rel="shortcut icon" type="image/png" href={saltRed.src} />
-  <link rel="apple-touch-icon" href={saltRed.src} />
-  <title>salt</title>
-  <Databuddy
-    clientId="rALU52_genirbSWfxdhia"
-    trackHashChanges={true}
-    trackAttributes={true}
-    trackOutgoingLinks={true}
-    trackInteractions={true}
-    trackEngagement={true}
-    trackScrollDepth={true}
-    trackExitIntent={true}
-    trackBounceRate={true}
-    trackWebVitals={true}
-    trackErrors={true}
-    enableBatching={true}
-  />
-</head>
-
-<Navbar />
-
-<main class="page-wrap">
-  <section class="hero">
-    <div class="container">
-      <div
-        class="hero__card glass-strong card anim-fade-scale anim-base"
-        style="--delay:140ms"
-      >
-        <p class="definition anim-fade anim-base" style="--delay:260ms">
-          zout -&gt; salt
-        </p>
-        <Image
-          src={saltRed}
-          alt="Salt Logo"
-          width={120}
-          height={120}
-          class="content-logo anim-fade-up anim-base"
-          style="--delay:200ms"
-          draggable={false}
-        />
-        <h1 class="title anim-fade-scale anim-base" style="--delay:300ms">
-          salt
-        </h1>
-        <h2 class="subtitle anim-fade anim-base" style="--delay:320ms">
-          hello, world
-        </h2>
-        <p class="body-text anim-fade anim-base" style="--delay:340ms">
-          i'm just a nerdy guy who likes software, tech, and design
-        </p>
-        <h3>my stack/stuff i know:</h3>
-        <Techiuse />
+<DatabuddyLayout title="salt" description="salt's site">
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="container">
+        <div
+          class="hero__card glass-strong card anim-fade-scale anim-base"
+          style="--delay:140ms"
+        >
+          <p class="definition anim-fade anim-base" style="--delay:260ms">
+            zout -&gt; salt
+          </p>
+          <Image
+            src={saltRed}
+            alt="Salt Logo"
+            width={120}
+            height={120}
+            class="content-logo anim-fade-up anim-base"
+            style="--delay:200ms"
+            draggable={false}
+          />
+          <h1 class="title anim-fade-scale anim-base" style="--delay:300ms">
+            salt
+          </h1>
+          <h2 class="subtitle anim-fade anim-base" style="--delay:320ms">
+            hello, world
+          </h2>
+          <p class="body-text anim-fade anim-base" style="--delay:340ms">
+            i'm just a nerdy guy who likes software, tech, and design
+          </p>
+          <h3>my stack/stuff i know:</h3>
+          <Techiuse />
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
+</DatabuddyLayout>

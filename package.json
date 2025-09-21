@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@databuddy/sdk": "^2.1.75",
     "astro": "^5.13.7"
   }
 }

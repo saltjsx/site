@@ -4,6 +4,7 @@ import Techiuse from "../components/Techiuse.astro";
 import "../styles/globals.css";
 import { Image } from "astro:assets";
 import saltRed from "../assets/salt red.png";
+import { Databuddy } from "@databuddy/sdk";
 ---
 
 <head>
@@ -15,6 +16,20 @@ import saltRed from "../assets/salt red.png";
   <link rel="shortcut icon" type="image/png" href={saltRed.src} />
   <link rel="apple-touch-icon" href={saltRed.src} />
   <title>salt</title>
+  <Databuddy
+    clientId="rALU52_genirbSWfxdhia"
+    trackHashChanges={true}
+    trackAttributes={true}
+    trackOutgoingLinks={true}
+    trackInteractions={true}
+    trackEngagement={true}
+    trackScrollDepth={true}
+    trackExitIntent={true}
+    trackBounceRate={true}
+    trackWebVitals={true}
+    trackErrors={true}
+    enableBatching={true}
+  />
 </head>
 
 <Navbar />

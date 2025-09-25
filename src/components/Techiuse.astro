@@ -73,3 +73,14 @@ import astroSvg from "../assets/svgs/astro.svg";
     </span>
   </div>
 </div>
+
+<style>
+  .tech-chip {
+    transition: transform var(--motion-duration-sm)
+      var(--motion-ease-emphasized);
+    will-change: transform;
+  }
+  .tech-chip:hover {
+    transform: scale(1.1);
+  }
+</style>

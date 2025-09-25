@@ -1,55 +1,116 @@
 ---
+// Determine current path for active link highlighting
+const { pathname } = Astro.url;
 import { Image } from "astro:assets";
-import saltWhite from "../assets/salt white.png";
-const currentPath = Astro.url.pathname;
+import logo from "../assets/salt white.png";
+
+interface NavLink {
+  href: string;
+  label: string;
+  match: (path: string) => boolean;
+}
+
+const links: NavLink[] = [
+  { href: "/", label: "Home", match: (p) => p === "/" },
+  { href: "/about", label: "About", match: (p) => p.startsWith("/about") },
+  {
+    href: "/links",
+    label: "Links",
+    match: (p) => p.startsWith("/links") || p.startsWith("/go"),
+  },
+  {
+    href: "/portfolio",
+    label: "Portfolio",
+    match: (p) => p.startsWith("/portfolio"),
+  },
+];
 ---
 
-<nav class="navbar" role="navigation" aria-label="Main">
+<nav class="navbar" aria-label="Primary">
   <div class="navbar__inner">
-    <a class="navbar__brand" href="/">
-      <Image
-        class="navbar__logo"
-        src={saltWhite}
-        alt="Salt logo"
-        width={28}
-        height={28}
-        draggable={false}
-      />
-      <span class="navbar__brand-text">salt</span>
+    <a class="navbar__brand" href="/" aria-label="Home">
+      <Image src={logo} width={32} height={32} alt="salt logo" format="png" />
+      <span class="navbar__label">salt</span>
     </a>
-
     <button
       class="navbar__toggle"
-      type="button"
-      aria-controls="navbar-menu"
       aria-expanded="false"
       aria-label="Toggle navigation"
+      id="navToggle"
     >
-      <span class="navbar__toggle-bar"></span>
-      <span class="navbar__toggle-bar"></span>
-      <span class="navbar__toggle-bar"></span>
+      <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      <span class="navbar__toggle-bar" aria-hidden="true"></span>
     </button>
-
-    <div class="navbar__menu-wrapper" id="navbar-menu">
-      <ul class="navbar__menu">
-        <li class="navbar__item">
-          <a
-            class="navbar__link"
-            href="/"
-            aria-current={currentPath === "/" ? "page" : undefined}>Home</a
-          >
-        </li>
-        <li class="navbar__item">
-          <a class="navbar__link" href="/about">About</a>
-        </li>
-        <li class="navbar__item">
-          <a class="navbar__link" href="/portfolio">Portfolio</a>
-        </li>
-        <li class="navbar__item">
-          <a class="navbar__link" href="/links">Links</a>
-        </li>
+    <div class="navbar__menu-wrapper" id="navMenuWrapper">
+      <ul class="navbar__menu" role="list">
+        {
+          links.map((l) => {
+            const active = l.match(pathname);
+            return (
+              <li>
+                <a
+                  class={["navbar__link", active && "is-active"]
+                    .filter(Boolean)
+                    .join(" ")}
+                  href={l.href}
+                  aria-current={active ? "page" : undefined}
+                >
+                  {l.label}
+                </a>
+              </li>
+            );
+          })
+        }
       </ul>
     </div>
   </div>
+  <script is:inline>
+    const toggle = document.getElementById("navToggle");
+    const wrap = document.getElementById("navMenuWrapper");
+    if (toggle && wrap) {
+      toggle.addEventListener("click", () => {
+        const open = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!open));
+        wrap.classList.toggle("is-open", !open);
+        document.body.classList.toggle("navbar-open", !open);
+      });
+      // Close on ESC
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          toggle.setAttribute("aria-expanded", "false");
+          wrap.classList.remove("is-open");
+          document.body.classList.remove("navbar-open");
+        }
+      });
+      // Close on outside click (mobile overlay scenario)
+      document.addEventListener("click", (e) => {
+        if (!wrap.classList.contains("is-open")) return;
+        if (!(e.target instanceof Node)) return;
+        if (!wrap.contains(e.target) && !toggle.contains(e.target)) {
+          toggle.setAttribute("aria-expanded", "false");
+          wrap.classList.remove("is-open");
+          document.body.classList.remove("navbar-open");
+        }
+      });
+    }
+  </script>
 </nav>
-<script src="/navbar-toggle.js" defer></script>
+
+<style>
+  /* Component-specific fine‑tuning (kept minimal; primary styles in globals) */
+  .navbar__menu li {
+    list-style: none;
+  }
+  .navbar__menu {
+    margin: 0;
+  }
+  .navbar__label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-left: 0.5rem;
+    text-transform: lowercase;
+    line-height: 1;
+  }
+</style>

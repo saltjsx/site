@@ -9,32 +9,44 @@ import imageOfPerth from "../assets/imageofperth.png";
     <section class="hero">
       <div class="container">
         <div
-          class="hero__card glass-strong card anim-fade-scale anim-base"
+          class="hero__card glass-strong card anim-fade-scale anim-base anim-seq"
           style="--delay:140ms"
         >
-          <h1 class="title anim-fade-scale anim-base" style="--delay:220ms">
+          <h1 class="title anim-tilt-in anim-base" style="--delay:220ms">
             about me
           </h1>
-          <p class="body-text anim-fade anim-base" style="--delay:260ms">
+          <p class="body-text anim-fade-left anim-base" style="--delay:260ms">
             hey there! i'm salt, a software dev from australia. i love coding,
             design, and public transit. i made this website using astro, and
             it's hosted on vercel.
           </p>
-          <p class="body-text anim-fade anim-base" style="--delay:300ms">
+          <p class="body-text anim-fade-up anim-base" style="--delay:300ms">
             i love helping people out and making random stuff. if you want to dm
             me, check out my <a href="/links">links page.</a>
           </p>
-          <p class="body-text anim-fade anim-base" style="--delay:340ms">
+          <p class="body-text anim-fade-right anim-base" style="--delay:340ms">
             i enjoy playing minecraft, roblox, kerbal space program and other
             friendslop games. i also enjoy watching and making youtube videos.
           </p>
           <Image
             src={imageOfPerth}
             alt="Skyline view of Perth, Australia"
-            class="about-image"
+            class="about-image anim-soft-in anim-base"
+            style="--delay:380ms"
           />
         </div>
       </div>
     </section>
   </main>
 </DatabuddyLayout>
+
+<style>
+  .about-image {
+    transition: transform var(--motion-duration-sm)
+      var(--motion-ease-emphasized);
+    will-change: transform;
+  }
+  .about-image:hover {
+    transform: scale(1.05);
+  }
+</style>

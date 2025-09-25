@@ -12,10 +12,16 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
 ---
 
 <a
-  class="link-item anim-base anim-fade-up"
+  class="link-item anim-base anim-soft-in"
   href={href}
   rel={link.internal ? undefined : "noopener noreferrer"}
   target={link.internal ? undefined : "_blank"}
+  style={`--delay:${(() => {
+    const s = link.slug || "";
+    let h = 0;
+    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return 160 + (h % 9) * 40;
+  })()}ms`}
 >
   {
     link.icon &&
@@ -67,7 +73,7 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     backdrop-filter: blur(var(--blur-1)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--blur-1)) saturate(140%);
     transition:
-      transform var(--motion-duration-md) var(--motion-ease-standard),
+      transform var(--motion-duration-md) var(--motion-ease-emphasized),
       background var(--motion-duration-md) var(--motion-ease-standard),
       border-color var(--motion-duration-md) var(--motion-ease-standard),
       box-shadow var(--motion-duration-lg) var(--motion-ease-standard);
@@ -75,9 +81,10 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
     color: rgb(var(--text-0));
     min-height: 112px;
     overflow: hidden;
+    will-change: transform;
   }
   .link-item:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.02);
     background: linear-gradient(
       145deg,
       rgb(var(--glass) / 0.14),
@@ -193,7 +200,7 @@ const href = link.internal ? link.url : `/go/${link.slug}`;
       rgb(var(--accent-2) / 0.25)
     );
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s var(--motion-ease-emphasized);
     mix-blend-mode: overlay;
     pointer-events: none;
   }

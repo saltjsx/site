@@ -1,226 +1,267 @@
 ---
 import type { LinkEntry } from "../data/links";
 
-interface Props {
-  link: LinkEntry;
-}
+import astroSvg from "../assets/svgs/astro.svg";
+import cssSvg from "../assets/svgs/css.svg";
+import expressSvg from "../assets/svgs/express.svg";
+import htmlSvg from "../assets/svgs/html.svg";
+import javascriptSvg from "../assets/svgs/javascript.svg";
+import nodeSvg from "../assets/svgs/nodejs.svg";
+import pythonSvg from "../assets/svgs/python.svg";
+import reactSvg from "../assets/svgs/react.svg";
 
-const { link } = Astro.props as Props;
-// Determine if we should wrap with a redirect (/go/slug) for tracking / uniformity
-// External links go through redirect; internal links can be direct.
+const { link } = Astro.props as { link: LinkEntry };
+
+const iconFallbacks: Record<string, string> = {
+  astro: astroSvg.src,
+  css: cssSvg.src,
+  express: expressSvg.src,
+  html: htmlSvg.src,
+  javascript: javascriptSvg.src,
+  js: javascriptSvg.src,
+  node: nodeSvg.src,
+  nodejs: nodeSvg.src,
+  python: pythonSvg.src,
+  react: reactSvg.src,
+};
+
+const normalizedSlug = link.slug.toLowerCase();
+const normalizedCategory = link.category?.toLowerCase().trim() ?? "";
+
+const resolvedIcon =
+  link.icon ??
+  iconFallbacks[normalizedSlug] ??
+  iconFallbacks[normalizedCategory] ??
+  astroSvg.src;
+
+const isEmojiIcon =
+  resolvedIcon.length <= 4 &&
+  !resolvedIcon.includes("/") &&
+  !resolvedIcon.includes(".");
+
+const ICON_COLOR = "#B41D33";
+
+const iconContainerStyle = `color: ${ICON_COLOR}`;
+const iconImageStyle = !isEmojiIcon
+  ? [
+      `background-color: ${ICON_COLOR}`,
+      `mask: url(${resolvedIcon}) center / contain no-repeat`,
+      `-webkit-mask: url(${resolvedIcon}) center / contain no-repeat`,
+    ].join("; ")
+  : undefined;
+
 const href = link.internal ? link.url : `/go/${link.slug}`;
+const isExternal = !link.internal;
+const relAttrs = isExternal ? "noreferrer noopener" : undefined;
+const targetAttr = isExternal ? "_blank" : undefined;
 ---
 
 <a
-  class="link-item anim-base anim-soft-in"
+  class="link-item glass anim-soft-in anim-base"
   href={href}
-  rel={link.internal ? undefined : "noopener noreferrer"}
-  target={link.internal ? undefined : "_blank"}
-  style={`--delay:${(() => {
-    const s = link.slug || "";
-    let h = 0;
-    for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
-    return 160 + (h % 9) * 40;
-  })()}ms`}
+  rel={relAttrs}
+  target={targetAttr}
+  aria-label={`${link.title} – ${link.description ?? "Open link"}`}
 >
-  {
-    link.icon &&
-      (typeof link.icon === "string" &&
-      (/(\.(svg|png|jpe?g|webp|gif|ico)$)/i.test(link.icon) ||
-        link.icon.startsWith("/@fs/")) ? (
-        <span class="icon icon--img" aria-hidden="true">
-          <img src={link.icon} alt="" loading="lazy" decoding="async" />
-        </span>
+  <span class="link-item__overlay" aria-hidden="true"></span>
+  <span
+    class={`link-item__icon ${isEmojiIcon ? "is-emoji" : ""}`}
+    aria-hidden="true"
+    style={iconContainerStyle}
+  >
+    {
+      isEmojiIcon ? (
+        resolvedIcon
       ) : (
-        <span class="icon" aria-hidden="true">
-          {typeof link.icon === "string" ? link.icon : ""}
-        </span>
-      ))
-  }
-  <span class="content">
-    <span class="title-row">
-      <span class="title-row">{link.title}</span>
+        <span class="link-item__icon-image" style={iconImageStyle} />
+      )
+    }
+  </span>
+
+  <span class="link-item__content">
+    <span class="link-item__heading">
+      <span class="link-item__title">{link.title}</span>
       {
-        !link.internal && (
-          <span class="ext" aria-hidden="true">
-            ↗
-          </span>
+        link.category && (
+          <span class="link-item__category">{link.category}</span>
         )
       }
     </span>
-    {link.description && <span class="desc">{link.description}</span>}
+    {
+      link.description && (
+        <span class="link-item__description">{link.description}</span>
+      )
+    }
+  </span>
+
+  <span class="link-item__cta" aria-hidden="true">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M5 12h14M13 6l6 6-6 6"></path>
+    </svg>
   </span>
 </a>
 
 <style>
   .link-item {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 16px;
-    align-items: center;
-    padding: 20px 22px;
     position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: clamp(14px, 1.8vw, 22px);
+    padding: clamp(16px, 1.8vw, 22px) clamp(18px, 2.4vw, 28px);
     border-radius: var(--radius-lg);
-    background: linear-gradient(
-      145deg,
-      rgb(var(--glass) / 0.09),
-      rgb(var(--glass) / 0.04)
-    );
-    border: 1px solid rgb(var(--glass) / 0.16);
-    box-shadow:
-      0 2px 6px -1px rgba(0, 0, 0, 0.4),
-      0 4px 22px -4px rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(var(--blur-1)) saturate(140%);
-    -webkit-backdrop-filter: blur(var(--blur-1)) saturate(140%);
+    color: inherit;
+    text-decoration: none;
+    overflow: hidden;
+    isolation: isolate;
     transition:
       transform var(--motion-duration-md) var(--motion-ease-emphasized),
       background var(--motion-duration-md) var(--motion-ease-standard),
-      border-color var(--motion-duration-md) var(--motion-ease-standard),
-      box-shadow var(--motion-duration-lg) var(--motion-ease-standard);
-    text-decoration: none;
-    color: rgb(var(--text-0));
-    min-height: 112px;
-    overflow: hidden;
-    will-change: transform;
+      box-shadow var(--motion-duration-md) var(--motion-ease-standard);
   }
+
   .link-item:hover {
-    transform: translateY(-4px) scale(1.02);
-    background: linear-gradient(
-      145deg,
-      rgb(var(--glass) / 0.14),
-      rgb(var(--glass) / 0.06)
-    );
-    border-color: rgb(var(--glass) / 0.28);
-    box-shadow:
-      0 4px 14px -4px rgba(0, 0, 0, 0.55),
-      0 8px 28px -6px rgba(0, 0, 0, 0.6);
-  }
-  .link-item:active {
-    transform: translateY(-1px);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -14px rgb(0 0 0 / 0.65);
   }
 
-  .icon {
-    width: 54px;
-    height: 54px;
-    display: grid;
-    place-items: center;
-    font-size: 1.8rem;
-    border-radius: var(--radius-md);
-    background: linear-gradient(
-      140deg,
-      rgb(var(--accent-2)),
-      rgb(var(--accent-1))
-    );
+  .link-item:focus-visible {
     box-shadow:
-      0 4px 14px rgb(0 0 0 / 0.45),
-      inset 0 0 0 1px rgb(var(--glass) / 0.3);
-    color: #fff;
-  }
-  .icon--img {
-    padding: 8px;
-  }
-  .icon--img img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    filter: brightness(0) invert(1); /* force white */
-    border-radius: 0;
-  }
-  .icon::after {
-    content: "";
-    position: absolute;
-    inset: 1px;
-    border-radius: inherit;
-    background: radial-gradient(
-      circle at 30% 25%,
-      rgb(var(--glass) / 0.35),
-      transparent 65%
-    );
-    mix-blend-mode: overlay;
-    opacity: 0.7;
-  }
-  .content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .title-row {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  a.link-item .title {
-    font-weight: 600;
-    letter-spacing: 0.015em;
-    font-size: 1.05rem;
-    color: #ffffff !important;
-  }
-  .ext {
-    font-size: 0.9rem;
-    opacity: 0.75;
-  }
-  .desc {
-    color: rgb(var(--text-1));
-    font-size: 0.83rem;
-    line-height: 1.4;
-    max-width: 40ch;
-    text-align: left;
+      0 0 0 2px rgb(var(--accent-1) / 0.6),
+      0 0 0 5px rgb(var(--glass) / 0.45);
   }
 
-  /* subtle decorative glow */
-  .link-item::before {
-    content: "";
+  .link-item__overlay {
     position: absolute;
-    inset: 0;
+    inset: -40%;
     background: radial-gradient(
-        600px 300px at 0% 0%,
-        rgb(var(--accent-1) / 0.18),
-        transparent 70%
-      ),
-      radial-gradient(
-        800px 400px at 100% 100%,
-        rgb(var(--accent-2) / 0.18),
-        transparent 75%
-      );
-    opacity: 0.45;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .link-item::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      120deg,
-      rgb(var(--accent-1) / 0.25),
-      transparent 40%,
-      transparent 60%,
-      rgb(var(--accent-2) / 0.25)
+      circle at top right,
+      rgb(var(--accent-1) / 0.22),
+      transparent 60%
     );
     opacity: 0;
-    transition: opacity 0.4s var(--motion-ease-emphasized);
-    mix-blend-mode: overlay;
-    pointer-events: none;
+    transition: opacity var(--motion-duration-md) var(--motion-ease-standard);
+    z-index: -1;
   }
-  .link-item:hover::after {
+
+  .link-item:hover .link-item__overlay {
     opacity: 1;
+  }
+
+  .link-item__icon {
+    width: clamp(48px, 4.6vw, 56px);
+    height: clamp(48px, 4.6vw, 56px);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: rgb(var(--glass) / 0.08);
+    border: 1px solid rgb(var(--glass) / 0.16);
+    box-shadow:
+      0 6px 20px -10px rgb(0 0 0 / 0.65),
+      0 0 0 1px rgb(var(--glass) / 0.12) inset;
+    transition: transform var(--motion-duration-md)
+      var(--motion-ease-emphasized);
+  }
+
+  .link-item:hover .link-item__icon {
+    transform: scale(1.05);
+  }
+
+  .link-item__icon.is-emoji {
+    font-size: clamp(1.8rem, 1.5rem + 0.8vw, 2.3rem);
+  }
+
+  .link-item__icon-image {
+    display: block;
+    width: 70%;
+    height: 70%;
+    filter: drop-shadow(0 6px 16px rgb(0 0 0 / 0.35));
+  }
+
+  .link-item__content {
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+  }
+
+  .link-item__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .link-item__title {
+    font-size: clamp(1.05rem, 0.98rem + 0.3vw, 1.28rem);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .link-item__category {
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: rgb(var(--glass) / 0.14);
+    border: 1px solid rgb(var(--glass) / 0.2);
+    font-size: clamp(0.68rem, 0.62rem + 0.18vw, 0.78rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--text-1));
+  }
+
+  .link-item__description {
+    font-size: clamp(0.82rem, 0.76rem + 0.18vw, 0.9rem);
+    color: rgb(var(--text-1));
+    text-align: left;
+    display: block;
+    width: 100%;
+  }
+
+  .link-item__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(34px, 3.6vw, 42px);
+    height: clamp(34px, 3.6vw, 42px);
+    border-radius: var(--radius-md);
+    background: rgb(var(--glass) / 0.08);
+    border: 1px solid rgb(var(--glass) / 0.14);
+    color: rgb(var(--text-0));
+    opacity: 0.9;
+    transition:
+      transform var(--motion-duration-md) var(--motion-ease-emphasized),
+      opacity var(--motion-duration-sm) var(--motion-ease-standard);
+  }
+
+  .link-item:hover .link-item__cta {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
+  .link-item__cta svg {
+    width: 18px;
+    height: 18px;
   }
 
   @media (max-width: 640px) {
     .link-item {
-      padding: 16px 18px;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
       gap: 14px;
-      min-height: 100px;
     }
-    .icon {
-      width: 48px;
-      height: 48px;
-      font-size: 1.5rem;
-    }
-    .desc {
-      font-size: 0.78rem;
+
+    .link-item__cta {
+      grid-column: 2 / -1;
+      grid-row: 2;
+      justify-self: end;
     }
   }
 </style>

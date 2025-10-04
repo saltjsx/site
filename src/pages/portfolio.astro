@@ -1,5 +1,6 @@
 ---
 import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
+import PortfolioList from "../components/PortfolioList.astro";
 ---
 
 <DatabuddyLayout title="salt - portfolio" description="salt's projects">
@@ -7,17 +8,51 @@ import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
     <section class="hero">
       <div class="container">
         <div
-          class="hero__card glass-strong card anim-fade-scale anim-base anim-seq"
+          class="hero__card glass-strong card anim-fade-scale anim-base portfolio-card anim-seq"
           style="--delay:140ms"
         >
           <h1 class="title anim-tilt-in anim-base" style="--delay:220ms">
             portfolio
           </h1>
           <p class="body-text anim-blur-in anim-base" style="--delay:260ms">
-            coming soon...
+            this is stuff i made for fun to learn things.
           </p>
+          <div class="portfolio-card-grid">
+            <PortfolioList />
+          </div>
         </div>
       </div>
     </section>
   </main>
 </DatabuddyLayout>
+
+<style>
+  .portfolio-card {
+    text-align: center;
+    width: min(1180px, 100%);
+  }
+  .portfolio-card .body-text {
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .portfolio-card :where(h1, p) {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .portfolio-card-grid {
+    width: 100%;
+    margin-top: clamp(34px, 5vh, 60px);
+  }
+  /* Let inner grid stretch without shrinking hero card's centered layout */
+  .portfolio-card-grid :where(.portfolio-section) {
+    width: 100%;
+  }
+  @media (max-width: 720px) {
+    .portfolio-card {
+      padding: 20px 18px;
+    }
+    .portfolio-card-grid {
+      margin-top: 28px;
+    }
+  }
+</style>

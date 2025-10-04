@@ -1,0 +1,32 @@
+---
+import { portfolio } from "../data/portfolio";
+import PortfolioItem from "./PortfolioItem.astro";
+
+// In future we could accept props (filtering, category grouping, etc.)
+---
+
+<section class="portfolio-section anim-fade-up anim-base" style="--delay:180ms">
+  <div class="portfolio-grid">
+    {portfolio.map((p) => <PortfolioItem portfolio={p} />)}
+  </div>
+</section>
+
+<style>
+  .portfolio-section {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    /* Reduce large bottom padding that created unnecessary space */
+    padding: 0 0 clamp(28px, 6vh, 60px);
+  }
+  .portfolio-grid {
+    display: grid;
+    gap: 24px;
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+  @media (max-width: 640px) {
+    .portfolio-grid {
+      gap: 18px;
+    }
+  }
+</style>

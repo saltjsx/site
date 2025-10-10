@@ -1,5 +1,6 @@
 import todoList from "../assets/todolist.png";
 import quickbuck from "../assets/quickbuck.png";
+import aimodel from "../assets/aimodel.png";
 
 
 // Central place to manage portfolio items used on the Portfolio page
@@ -33,5 +34,10 @@ export const portfolio: PortfolioEntry[] = [
     title: "todo list", 
     description: "it's literally just a todo list",
     image: todoList,
+  },{
+    url: "https://aimodelprices.vercel.app/",
+    title: "AI Model Prices",
+    description: "see the prices of different ai models, straight from openrouter",
+    image: aimodel,
   },
 ];

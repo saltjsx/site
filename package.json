@@ -9,10 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/react": "^4.0.0",
     "@databuddy/sdk": "^2.1.75",
     "astro": "^5.13.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "@astrojs/react": "^4.0.0"
+    "zenblog": "^1.2.0"
   }
 }

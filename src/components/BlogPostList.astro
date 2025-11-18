@@ -28,7 +28,7 @@ function truncateText(text: string, maxLength: number = 150): string {
     {
       posts.length > 0 ? (
         posts.map((post: Post, index: number) => (
-          <article class="blog-post-card glass card anim-fade-up anim-base" style={`--delay: ${index * 80 + 200}ms`}>
+          <article class="blog-post-card glass-strong card anim-fade-up anim-base" style={`--delay: ${index * 80 + 200}ms`}>
             <a href={`/blog/${post.slug}`} class="blog-post-link">
               <div class="blog-post-content">
                 <div class="blog-post-meta">
@@ -131,8 +131,10 @@ function truncateText(text: string, maxLength: number = 150): string {
   }
 
   .blog-category {
-    background: rgb(var(--accent-1) / 0.15);
+    background: rgb(var(--accent-1) / 0.2);
+    backdrop-filter: blur(4px);
     color: rgb(var(--accent-1));
+    border: 1px solid rgb(var(--accent-1) / 0.3);
     padding: 4px 8px;
     border-radius: var(--radius-sm);
     font-weight: 500;
@@ -174,13 +176,14 @@ function truncateText(text: string, maxLength: number = 150): string {
   }
 
   .blog-tag {
-    background: rgb(var(--glass) / 0.12);
+    background: rgb(var(--glass) / 0.18);
+    backdrop-filter: blur(4px);
     color: rgb(var(--text-1));
     padding: 3px 8px;
     border-radius: var(--radius-sm);
     font-size: 0.75rem;
     font-weight: 500;
-    border: 1px solid rgb(var(--glass) / 0.2);
+    border: 1px solid rgb(var(--glass) / 0.25);
   }
 
   .blog-author {

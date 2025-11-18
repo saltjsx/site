@@ -9,7 +9,7 @@ import imageOfPerth from "../assets/imageofperth.png";
     <section class="hero">
       <div class="container">
         <div
-          class="hero__card glass-strong card anim-fade-scale anim-base anim-seq"
+          class="hero__card glass-intense card anim-fade-scale anim-base anim-seq"
           style="--delay:140ms"
         >
           <h1 class="title anim-tilt-in anim-base" style="--delay:220ms">
@@ -28,12 +28,13 @@ import imageOfPerth from "../assets/imageofperth.png";
             i enjoy playing minecraft, roblox, kerbal space program and other
             friendslop games. i also enjoy watching and making youtube videos.
           </p>
-          <Image
-            src={imageOfPerth}
-            alt="Skyline view of Perth, Australia"
-            class="about-image anim-soft-in anim-base"
-            style="--delay:380ms"
-          />
+          <div class="about-image-container anim-soft-in anim-base" style="--delay:380ms">
+            <Image
+              src={imageOfPerth}
+              alt="Skyline view of Perth, Australia"
+              class="about-image"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -41,7 +42,19 @@ import imageOfPerth from "../assets/imageofperth.png";
 </DatabuddyLayout>
 
 <style>
+  .about-image-container {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgb(var(--glass) / 0.2);
+    box-shadow: 0 8px 32px -8px rgb(0 0 0 / 0.5);
+    /* Glass feel container */
+    background: rgb(var(--glass) / 0.05);
+    padding: 4px;
+  }
   .about-image {
+    border-radius: calc(var(--radius-lg) - 4px);
+    display: block;
+    width: 100%;
     transition: transform var(--motion-duration-sm)
       var(--motion-ease-emphasized);
     will-change: transform;

@@ -1,249 +1,162 @@
 ---
-import { zenblog } from '../utils/zenblog';
-import type { Post } from '@zenblog/types';
+import { zenblog } from "../utils/zenblog";
+import type { Post } from "@zenblog/types";
 
-// Fetch posts from ZenBlog API
+// We'll fetch server-side but use a client script to "show" the load
 const response = await zenblog.posts.list({ limit: 10 });
 const posts = response.data || [];
 
-// Format date helper
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
+// Format date helper for the script
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
-}
-
-// Truncate text helper
-function truncateText(text: string, maxLength: number = 150): string {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength).replace(/\s+\S*$/, '') + '...';
 }
 ---
 
-<section class="blog-section">
-  <div class="blog-grid stagger-fade-up">
+<div id="blog-container">
+  <!-- Loading state - visible by default -->
+  <div id="blog-loader" class="blog-loading">
+    <div class="blog-loading-spinner"></div>
+    <span class="comment"># fetching blog posts...</span>
+  </div>
+
+  <!-- Actual list - hidden initially -->
+  <div id="blog-list" class="blog-list" style="display: none;">
     {
-      posts.length > 0 ? (
-        posts.map((post: Post, index: number) => (
-          <article class="blog-post-card glass-strong card anim-fade-up anim-base" style={`--delay: ${index * 80 + 200}ms`}>
-            <a href={`/blog/${post.slug}`} class="blog-post-link">
-              <div class="blog-post-content">
-                <div class="blog-post-meta">
-                  {post.category && (
-                    <span class="blog-category">{post.category.name}</span>
-                  )}
-                  <time class="blog-date" datetime={post.published_at}>
-                    {formatDate(post.published_at)}
-                  </time>
-                </div>
-                
-                <h2 class="blog-title">
-                    {post.title}
-                </h2>
-                
-                {post.excerpt && (
-                  <p class="blog-excerpt">
-                    {truncateText(post.excerpt)}
-                  </p>
-                )}
-                
-                {post.tags && post.tags.length > 0 && (
-                  <div class="blog-tags">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <span class="blog-tag">{tag.name}</span>
-                    ))}
-                  </div>
-                )}
-                
-                {post.authors && post.authors.length > 0 && (
-                  <div class="blog-author">
-                    {post.authors[0].name}
-                  </div>
-                )}
-              </div>
-            </a>
-          </article>
-        ))
-      ) : (
-        <div class="blog-empty glass-strong card">
-          <p class="blog-empty-text">No posts found. Check back soon!</p>
-        </div>
-      )
+      posts.map((post: Post, index: number) => (
+        <a href={`/blog/${post.slug}`} class="blog-item">
+          <span class="blog-line-number">{index + 1}</span>
+          <div class="blog-content">
+            <span class="blog-date">
+              {new Date(post.published_at).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+            <span class="blog-title">{post.title}</span>
+          </div>
+        </a>
+      ))
     }
   </div>
-</section>
+
+  {
+    posts.length === 0 && (
+      <div id="blog-empty" class="blog-empty" style="display: none;">
+        <span class="comment"># no posts found. check back soon!</span>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  // Simple "loading" simulation since Astro is pre-rendered
+  // This makes the loading state actually visible to the user
+  window.addEventListener("DOMContentLoaded", () => {
+    const loader = document.getElementById("blog-loader");
+    const list = document.getElementById("blog-list");
+    const empty = document.getElementById("blog-empty");
+
+    if (loader && (list || empty)) {
+      setTimeout(() => {
+        loader.style.display = "none";
+        if (list) list.style.display = "flex";
+        if (empty) empty.style.display = "block";
+      }, 800); // Small delay to make the loading state feel "real"
+    }
+  });
+</script>
 
 <style>
-  .blog-section {
-    width: 100%;
-  }
-
-  .blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: clamp(20px, 3vw, 32px);
-    width: 100%;
-  }
-
-  .blog-post-card {
-    padding: clamp(18px, 2.5vw, 24px);
-    border-radius: var(--radius-lg);
-    text-align: left;
-  }
-
-  .blog-post-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-    border-radius: var(--radius-lg);
-    transition: transform var(--motion-duration-sm) var(--motion-ease-standard),
-                box-shadow var(--motion-duration-sm) var(--motion-ease-standard);
-  }
-
-  .blog-post-link:hover {
-    /* Hover state removed - avoiding nested card effect */
-  }
-
-  .blog-post-link:focus-visible {
-    outline: 2px solid var(--accent-1);
-    outline-offset: 4px;
-  }
-
-  .blog-post-content {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    height: 100%;
-  }
-
-  .blog-post-meta {
+  .blog-loading {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 0.85rem;
-    color: rgb(var(--text-1));
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    color: var(--fg-dim);
   }
 
-  .blog-category {
-    background: rgb(var(--accent-1) / 0.2);
-    backdrop-filter: blur(4px);
-    color: rgb(var(--accent-1));
-    border: 1px solid rgb(var(--accent-1) / 0.3);
-    padding: 4px 8px;
-    border-radius: var(--radius-sm);
-    font-weight: 500;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  .blog-loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--fg);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .blog-list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .blog-item {
+    display: flex;
+    align-items: stretch;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    margin-top: -1px;
+    transition: background 0.2s ease;
+  }
+
+  .blog-item:first-child {
+    margin-top: 0;
+  }
+
+  .blog-item:hover {
+    background: rgba(247, 247, 244, 0.05);
+  }
+
+  .blog-line-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.5rem;
+    padding: 0.75rem;
+    background: rgba(247, 247, 244, 0.05);
+    border-right: 1px solid var(--border);
+    color: var(--fg-dim);
+    font-size: 0.85rem;
+  }
+
+  .blog-content {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .blog-date {
-    color: rgb(var(--text-1));
-    font-weight: 400;
+    color: var(--fg-dim);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    min-width: 100px;
   }
 
   .blog-title {
-    margin: 4px 0;
-    font-size: clamp(1.1rem, 1.05rem + 0.25vw, 1.3rem);
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-    color: rgb(var(--text-0));
-    transition: color var(--motion-duration-sm) var(--motion-ease-standard);
-  }
-
-  .blog-post-link:hover .blog-title {
-    color: rgb(var(--accent-1));
-  }
-
-  .blog-excerpt {
-    color: rgb(var(--text-1));
-    line-height: 1.5;
-    margin: 0;
-    flex-grow: 1;
-  }
-
-  .blog-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  .blog-tag {
-    background: rgb(var(--glass) / 0.18);
-    backdrop-filter: blur(4px);
-    color: rgb(var(--text-1));
-    padding: 3px 8px;
-    border-radius: var(--radius-sm);
-    font-size: 0.75rem;
+    flex: 1;
+    color: var(--fg);
     font-weight: 500;
-    border: 1px solid rgb(var(--glass) / 0.25);
   }
 
-  .blog-author {
-    color: rgb(var(--text-1));
-    font-size: 0.85rem;
-    font-style: italic;
-    margin-top: auto;
-    padding-top: 8px;
+  .blog-item:hover .blog-title {
+    text-decoration: underline;
   }
 
   .blog-empty {
-    text-align: center;
-    padding: clamp(40px, 6vw, 60px);
-    grid-column: 1 / -1;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
   }
-
-  .blog-empty-text {
-    color: rgb(var(--text-1));
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
-  /* Mobile responsiveness */
-  @media (max-width: 720px) {
-    .blog-grid {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .blog-post-card {
-      padding: 18px;
-    }
-
-    .blog-post-meta {
-      font-size: 0.8rem;
-    }
-
-    .blog-title {
-      font-size: 1.1rem;
-    }
-
-    .blog-excerpt {
-      font-size: 0.9rem;
-    }
-  }
-
-  /* Animation for staggered fade up */
-  .blog-grid > * {
-    opacity: 0;
-    animation: fade-up var(--motion-duration-md) var(--motion-ease-standard) both;
-  }
-
-  .blog-grid > *:nth-child(1) { animation-delay: calc(var(--stagger-interval) * 0); }
-  .blog-grid > *:nth-child(2) { animation-delay: calc(var(--stagger-interval) * 1); }
-  .blog-grid > *:nth-child(3) { animation-delay: calc(var(--stagger-interval) * 2); }
-  .blog-grid > *:nth-child(4) { animation-delay: calc(var(--stagger-interval) * 3); }
-  .blog-grid > *:nth-child(5) { animation-delay: calc(var(--stagger-interval) * 4); }
-  .blog-grid > *:nth-child(6) { animation-delay: calc(var(--stagger-interval) * 5); }
-  .blog-grid > *:nth-child(7) { animation-delay: calc(var(--stagger-interval) * 6); }
-  .blog-grid > *:nth-child(8) { animation-delay: calc(var(--stagger-interval) * 7); }
-  .blog-grid > *:nth-child(9) { animation-delay: calc(var(--stagger-interval) * 8); }
-  .blog-grid > *:nth-child(10) { animation-delay: calc(var(--stagger-interval) * 9); }
 </style>

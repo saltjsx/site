@@ -6,60 +6,90 @@ import imageOfPerth from "../assets/imageofperth.png";
 
 <DatabuddyLayout title="salt - about" description="About salt">
   <main class="page-wrap">
-    <section class="hero">
-      <div class="container">
-        <div
-          class="hero__card glass-intense card anim-fade-scale anim-base anim-seq"
-          style="--delay:140ms"
-        >
-          <h1 class="title anim-tilt-in anim-base" style="--delay:220ms">
-            about me
-          </h1>
-          <p class="body-text anim-fade-left anim-base" style="--delay:260ms">
-            hey there! i'm salt, a software dev from australia. i love coding,
-            design, and public transit. i made this website using astro, and
-            it's hosted on vercel.
-          </p>
-          <p class="body-text anim-fade-up anim-base" style="--delay:300ms">
-            i love helping people out and making random stuff. if you want to dm
-            me, check out my <a href="/links">links page.</a>
-          </p>
-          <p class="body-text anim-fade-right anim-base" style="--delay:340ms">
-            i enjoy playing minecraft, roblox, kerbal space program and other
-            friendslop games. i also enjoy watching and making youtube videos.
-          </p>
-          <div class="about-image-container anim-soft-in anim-base" style="--delay:380ms">
-            <Image
-              src={imageOfPerth}
-              alt="Skyline view of Perth, Australia"
-              class="about-image"
-            />
-          </div>
+    <div class="container">
+      <div class="terminal">
+        <div class="terminal-line">
+          <span class="line-number">1</span>
+          <span class="line-content md-h1"># about me</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">2</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">3</span>
+          <span class="line-content"
+            >hiya, i'm salt. a software dev based in hell(australia).</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">4</span>
+          <span class="line-content"
+            >i love writing code, design(occasionally), and public transit.</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">5</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">6</span>
+          <span class="line-content md-h2">## what i do</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">7</span>
+          <span class="line-content"
+            >i currently work on <a href="https://tryportal.app">portal</a>, an
+            open-source slack alternative.</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">8</span>
+          <span class="line-content"
+            >i'm also currently working on a stealth startup. i also enjoy
+            making stupid side projects that lead to nowhere.</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">9</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">10</span>
+          <span class="line-content md-h2">## hobbies</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">11</span>
+          <span class="line-content"
+            >i play friendslop games w/ my friends sometimes.</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">12</span>
+          <span class="line-content"
+            >i also enjoy watching and making youtube videos(also sometimes).</span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">13</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">14</span>
+          <span class="line-content"
+            >other than that, i just make random bs on the internet :)</span
+          >
         </div>
       </div>
-    </section>
+
+      <div class="about-image-container">
+        <Image
+          src={imageOfPerth}
+          alt="Skyline view of Perth, Australia"
+          width={300}
+          class="about-image"
+        />
+      </div>
+    </div>
   </main>
 </DatabuddyLayout>
-
-<style>
-  .about-image-container {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgb(var(--glass) / 0.2);
-    box-shadow: 0 8px 32px -8px rgb(0 0 0 / 0.5);
-    /* Glass feel container */
-    background: rgb(var(--glass) / 0.05);
-    padding: 4px;
-  }
-  .about-image {
-    border-radius: calc(var(--radius-lg) - 4px);
-    display: block;
-    width: 100%;
-    transition: transform var(--motion-duration-sm)
-      var(--motion-ease-emphasized);
-    will-change: transform;
-  }
-  .about-image:hover {
-    transform: scale(1.05);
-  }
-</style>

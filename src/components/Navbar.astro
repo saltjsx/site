@@ -11,21 +11,21 @@ interface NavLink {
 }
 
 const links: NavLink[] = [
-  { href: "/", label: "Home", match: (p) => p === "/" },
-  { href: "/about", label: "About", match: (p) => p.startsWith("/about") },
+  { href: "/", label: "home", match: (p) => p === "/" },
+  { href: "/about", label: "about", match: (p) => p.startsWith("/about") },
   {
     href: "/links",
-    label: "Links",
+    label: "links",
     match: (p) => p.startsWith("/links") || p.startsWith("/go"),
   },
   {
     href: "/portfolio",
-    label: "Portfolio",
+    label: "portfolio",
     match: (p) => p.startsWith("/portfolio"),
   },
   {
     href: "/blog",
-    label: "Blog",
+    label: "blog",
     match: (p) => p.startsWith("/blog"),
   },
 ];
@@ -34,7 +34,7 @@ const links: NavLink[] = [
 <nav class="navbar" aria-label="Primary">
   <div class="navbar__inner">
     <a class="navbar__brand" href="/" aria-label="Home">
-      <Image src={logo} width={32} height={32} alt="salt logo" format="png" />
+      <Image src={logo} width={20} height={20} alt="salt logo" />
       <span class="navbar__label">salt</span>
     </a>
     <button
@@ -78,44 +78,13 @@ const links: NavLink[] = [
         const open = toggle.getAttribute("aria-expanded") === "true";
         toggle.setAttribute("aria-expanded", String(!open));
         wrap.classList.toggle("is-open", !open);
-        document.body.classList.toggle("navbar-open", !open);
       });
-      // Close on ESC
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           toggle.setAttribute("aria-expanded", "false");
           wrap.classList.remove("is-open");
-          document.body.classList.remove("navbar-open");
-        }
-      });
-      // Close on outside click (mobile overlay scenario)
-      document.addEventListener("click", (e) => {
-        if (!wrap.classList.contains("is-open")) return;
-        if (!(e.target instanceof Node)) return;
-        if (!wrap.contains(e.target) && !toggle.contains(e.target)) {
-          toggle.setAttribute("aria-expanded", "false");
-          wrap.classList.remove("is-open");
-          document.body.classList.remove("navbar-open");
         }
       });
     }
   </script>
 </nav>
-
-<style>
-  /* Component-specific fine‑tuning (kept minimal; primary styles in globals) */
-  .navbar__menu li {
-    list-style: none;
-  }
-  .navbar__menu {
-    margin: 0;
-  }
-  .navbar__label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    margin-left: 0.5rem;
-    text-transform: lowercase;
-    line-height: 1;
-  }
-</style>

@@ -1,58 +1,40 @@
 ---
 import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
-import LinksList from "../components/LinksList.astro";
+import { links } from "../data/links";
 ---
 
 <DatabuddyLayout title="salt - links" description="Links to salt's stuff">
   <main class="page-wrap">
-    <section class="hero">
-      <div class="container">
-        <div
-          class="hero__card glass-intense card anim-fade-scale anim-base links-card anim-seq"
-          style="--delay:140ms"
-        >
-          <h1 class="title anim-tilt-in anim-base" style="--delay:220ms">
-            links
-          </h1>
-          <p class="body-text anim-fade-left anim-base" style="--delay:260ms">
-            find me & my work around the web
-          </p>
-          <div class="links-card-grid">
-            <LinksList />
-          </div>
+    <div class="container">
+      <div class="terminal">
+        <div class="terminal-line">
+          <span class="line-number">1</span>
+          <span class="line-content md-h1"># links</span>
         </div>
+        <div class="terminal-line">
+          <span class="line-number">2</span>
+          <span class="line-content">find me around the web</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">3</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        {
+          links.map((link, i) => (
+            <div class="terminal-line">
+              <span class="line-number">{i + 4}</span>
+              <span class="line-content">
+                <a href={link.url} target="_blank" rel="noopener noreferrer">
+                  {link.title.toLowerCase()}
+                </a>
+                {link.description && (
+                  <span class="comment"> - {link.description}</span>
+                )}
+              </span>
+            </div>
+          ))
+        }
       </div>
-    </section>
+    </div>
   </main>
 </DatabuddyLayout>
-
-<style>
-  .links-card {
-    text-align: center;
-    width: min(1180px, 100%);
-  }
-  .links-card .body-text {
-    max-width: 46ch;
-    margin-inline: auto;
-  }
-  .links-card :where(h1, p) {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .links-card-grid {
-    width: 100%;
-    margin-top: clamp(34px, 5vh, 60px);
-  }
-  /* Let inner grid stretch without shrinking hero card's centered layout */
-  .links-card-grid :where(.links-section) {
-    width: 100%;
-  }
-  @media (max-width: 720px) {
-    .links-card {
-      padding: 20px 18px;
-    }
-    .links-card-grid {
-      margin-top: 28px;
-    }
-  }
-</style>

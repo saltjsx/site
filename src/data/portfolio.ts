@@ -1,6 +1,9 @@
 import todoList from "../assets/todolist.png";
 import quickbuck from "../assets/quickbuck.png";
 import aimodel from "../assets/aimodel.png";
+import portal from "../assets/portal.png";
+import xam from "../assets/xam.png"
+import spreadshift from "../assets/spreadshift.png"
 
 
 // Central place to manage portfolio items used on the Portfolio page
@@ -23,21 +26,28 @@ export interface PortfolioEntry {
 // To use an image asset, import it below and set image: importedAsset
 
 export const portfolio: PortfolioEntry[] = [
-    {
-    url: "https://quickbuck.zout.pw",
-    title: "quickbuck", 
-    description: "quickbuck is a finance game that i made to play with my friends",
-    image: quickbuck,
+  {
+    url: "https://tryportal.app",
+    title: "portal",
+    description: "the open-source slack alternative",
+    image: portal,
   },
   {
-    url: "https://todo.zout.pw",
-    title: "todo list", 
-    description: "it's literally just a todo list",
-    image: todoList,
-  },{
-    url: "https://aimodelprices.vercel.app/",
-    title: "AI Model Prices",
-    description: "see the prices of different ai models, straight from openrouter",
-    image: aimodel,
+    url: "https://myxam.xyz",
+    title: "xam",
+    description: "xam is an ai-powered test creation tool for k-12",
+    image: xam,
+  },
+  {
+    url: "https://github.com/saltjsx/spreadshift",
+    title: "spreadshift",
+    description: "spreadshift is an even better stupid finance game(better quickbuck)",
+    image: spreadshift,
+  },
+  {
+    url: "https://github.com/saltjsx/quickbuck-v1b",
+    title: "quickbuck",
+    description: "quickbuck was a stupid finance game i made",
+    image: quickbuck,
   },
 ];

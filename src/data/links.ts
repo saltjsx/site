@@ -34,21 +34,28 @@ export const links: LinkEntry[] = [
     url: "https://github.com/saltjsx",
     title: "GitHub",
     description: "find my code here",
-  icon: githubIcon.src
+    icon: githubIcon.src
   },
   {
     slug: "twitter",
     url: "https://x.com/saltjsx",
     title: "Twitter",
     description: "idk follow me i guess",
-  icon: twitterIcon.src,
+    icon: twitterIcon.src,
   },
   {
     slug: "youtube",
     url: "https://youtube.com/@saltjsx",
     title: "YouTube",
     description: "i make videos(sometimes)",
-  icon: youtubeIcon.src,
+    icon: youtubeIcon.src,
+  },
+  {
+    slug: "portal",
+    url: "https://tryportal.app",
+    title: "Portal",
+    description: "the open-source slack alternative",
+    icon: ""
   },
 ];
 

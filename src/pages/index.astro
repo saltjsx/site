@@ -1,43 +1,57 @@
 ---
 import DatabuddyLayout from "../layouts/DatabuddyLayout.astro";
-import Techiuse from "../components/Techiuse.astro";
-import { Image } from "astro:assets";
-import saltRed from "../assets/salt red.png";
 ---
 
 <DatabuddyLayout title="salt" description="salt's site">
   <main class="page-wrap">
-    <section class="hero">
-      <div class="container">
-        <div
-          class="hero__card glass-intense card anim-fade-scale anim-base anim-seq"
-          style="--delay:140ms"
-        >
-          <p class="definition anim-fade-left anim-base" style="--delay:260ms">
-            zout -&gt; salt
-          </p>
-          <Image
-            src={saltRed}
-            alt="Salt Logo"
-            width={120}
-            height={120}
-            class="content-logo anim-soft-in anim-base"
-            style="--delay:200ms"
-            draggable={false}
-          />
-          <h1 class="title anim-tilt-in anim-base" style="--delay:300ms">
-            salt
-          </h1>
-          <h2 class="subtitle anim-fade-right anim-base" style="--delay:320ms">
-            hello, world
-          </h2>
-          <p class="body-text anim-fade-up anim-base" style="--delay:340ms">
-            i'm just a nerdy guy who likes software, tech, and design
-          </p>
-          <h3>my stack/stuff i know:</h3>
-          <Techiuse />
+    <div class="container">
+      <div class="terminal">
+        <div class="terminal-line">
+          <span class="line-number">1</span>
+          <span class="line-content md-h1"># hello, world</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">2</span>
+          <span class="line-content md-h2">## i'm salt</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">3</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">4</span>
+          <span class="line-content md-h2">## about me</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">5</span>
+          <span class="line-content">i'm just a nerdy guy who likes</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">6</span>
+          <span class="line-content">software, tech, and design</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">7</span>
+          <span class="line-content">&nbsp;</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">8</span>
+          <span class="line-content md-h2">## contact</span>
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">9</span>
+          <span class="line-content"
+            >email me: <a href="mailto:saltjsx@gmail.com">saltjsx@gmail.com</a
+            ></span
+          >
+        </div>
+        <div class="terminal-line">
+          <span class="line-number">10</span>
+          <span class="line-content"
+            >or check out my <a href="/links">links</a></span
+          >
         </div>
       </div>
-    </section>
+    </div>
   </main>
 </DatabuddyLayout>

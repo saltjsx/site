@@ -37,7 +37,10 @@ function formatDate(date: Date): string {
                 day: "numeric",
               })}
             </span>
-            <span class="blog-title">{post.title}</span>
+            <div class="blog-info">
+              <span class="blog-title">{post.title}</span>
+              {post.excerpt && <span class="blog-excerpt">{post.excerpt}</span>}
+            </div>
           </div>
         </a>
       ))
@@ -134,7 +137,7 @@ function formatDate(date: Date): string {
     flex: 1;
     padding: 0.75rem 1.25rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align to top for multiline content */
     gap: 1.5rem;
   }
 
@@ -143,12 +146,29 @@ function formatDate(date: Date): string {
     font-size: 0.85rem;
     flex-shrink: 0;
     min-width: 100px;
+    padding-top: 0.1rem; /* Visual alignment with title */
+  }
+
+  .blog-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
   }
 
   .blog-title {
-    flex: 1;
     color: var(--fg);
     font-weight: 500;
+  }
+
+  .blog-excerpt {
+    color: var(--fg-dim);
+    font-size: 0.85rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
   }
 
   .blog-item:hover .blog-title {

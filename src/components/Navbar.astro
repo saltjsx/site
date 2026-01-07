@@ -47,7 +47,7 @@ const links: NavLink[] = [
       <span class="navbar__toggle-bar" aria-hidden="true"></span>
       <span class="navbar__toggle-bar" aria-hidden="true"></span>
     </button>
-    <div class="navbar__menu-wrapper" id="navMenuWrapper">
+    <div class="navbar__menu-wrapper" id="navbar-menu">
       <ul class="navbar__menu" role="list">
         {
           links.map((l) => {
@@ -70,21 +70,4 @@ const links: NavLink[] = [
       </ul>
     </div>
   </div>
-  <script is:inline>
-    const toggle = document.getElementById("navToggle");
-    const wrap = document.getElementById("navMenuWrapper");
-    if (toggle && wrap) {
-      toggle.addEventListener("click", () => {
-        const open = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", String(!open));
-        wrap.classList.toggle("is-open", !open);
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          toggle.setAttribute("aria-expanded", "false");
-          wrap.classList.remove("is-open");
-        }
-      });
-    }
-  </script>
 </nav>

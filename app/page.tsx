@@ -1,65 +1,163 @@
+"use client";
+
+import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight } from "@phosphor-icons/react";
+
+const ACCENT = "#FB5130";
+
+type LineItem = {
+  content: React.ReactNode;
+  delay: number;
+};
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const lines: LineItem[] = [
+    {
+      content: (
+        <span>
+          heyo, i&apos;m{" "}
+          <span
+            style={{
+              color: ACCENT,
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+            }}
           >
+            salt
+          </span>
+        </span>
+      ),
+      delay: 0,
+    },
+    {
+      content: (
+        <span>
+          currently cto @{" "}
+          <ExternalLink href="https://clovr.dev">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/clovr-color.svg"
+              alt=""
+              width={14}
+              height={14}
+              className="inline-block shrink-0"
+              style={{ verticalAlign: "middle" }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            clovr
+          </ExternalLink>
+        </span>
+      ),
+      delay: 80,
+    },
+    {
+      content: (
+        <span>
+          also working on{" "}
+          <ExternalLink href="https://tryportal.app">
+            <Image
+              src="/portal.svg"
+              alt=""
+              width={14}
+              height={14}
+              className="inline-block shrink-0"
+              style={{ verticalAlign: "middle" }}
+            />
+            portal
+          </ExternalLink>{" "}
+          on the side
+        </span>
+      ),
+      delay: 160,
+    },
+    {
+      content: (
+        <span>
+          based in 🇦🇺 Australia, from 🇺🇸 USA
+        </span>
+      ),
+      delay: 240,
+    },
+    {
+      content: (
+        <span>
+          <ExternalLink href="https://x.com/saltjsx">twitter</ExternalLink>{" "}
+          is probably the best way to reach me
+        </span>
+      ),
+      delay: 320,
+    },
+  ];
+
+  return (
+    <div className="flex min-h-screen items-center px-10 py-16">
+      <div className="w-full max-w-md">
+        {/* Content lines */}
+        <ul className="flex flex-col gap-0">
+          {lines.map((line, i) => (
+            <li
+              key={i}
+              className="home-fadein flex items-center border-b border-border py-4 last:border-b-0"
+              style={{ animationDelay: `${line.delay + 100}ms` }}
+            >
+              <span className="text-sm leading-relaxed text-foreground">
+                {line.content}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Footer tick */}
+        <div
+          className="home-fadein mt-8 text-[10px] tracking-widest uppercase"
+          style={{
+            color: "var(--muted-foreground)",
+            animationDelay: "500ms",
+          }}
+        >
+          © {new Date().getFullYear()}
         </div>
-      </main>
+      </div>
+
+      <style>{`
+        @keyframes homeFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .home-fadein {
+          opacity: 0;
+          animation: homeFadeIn 0.35s ease forwards;
+        }
+      `}</style>
     </div>
+  );
+}
+
+function ExternalLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-0.5 underline underline-offset-3 transition-opacity hover:opacity-60"
+      style={{
+        color: ACCENT,
+        textDecorationColor: ACCENT,
+      }}
+    >
+      {children}
+      <ArrowUpRight size={10} weight="bold" style={{ color: ACCENT }} />
+    </Link>
   );
 }

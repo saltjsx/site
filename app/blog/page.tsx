@@ -1,8 +1,7 @@
 import Link from "next/link";
+import { RetroLayout } from "../components/RetroLayout";
 import { zenblog } from "@/lib/zenblog";
 import type { Post } from "zenblog/types";
-
-const ACCENT = "#FB5130";
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
@@ -23,94 +22,33 @@ export default async function Blog() {
   }
 
   return (
-    <div className="flex min-h-screen items-center px-10 py-16">
-      <div className="w-full max-w-md">
-        {/* Header label */}
-        <div
-          className="home-fadein mb-1 text-[10px] tracking-widest uppercase"
-          style={{ color: "var(--muted-foreground)", animationDelay: "0ms" }}
-        >
-          blog
-        </div>
+    <RetroLayout>
+      <h1 style={{ color: "#fff", fontSize: "16px", marginBottom: "16px" }}>
+        &gt;&gt; blog
+      </h1>
 
-        {/* Posts list */}
-        <ul className="flex flex-col gap-0">
-          {posts.length === 0 ? (
-            <li
-              className="home-fadein border-b border-border py-4 last:border-b-0"
-              style={{ animationDelay: "80ms" }}
-            >
-              <span className="text-sm text-muted-foreground">
-                no posts yet.
-              </span>
-            </li>
-          ) : (
-            posts.map((post, i) => (
-              <li
-                key={post.slug}
-                className="home-fadein border-b border-border last:border-b-0"
-                style={{ animationDelay: `${80 + i * 80}ms` }}
+      {posts.length === 0 ? (
+        <p style={{ fontSize: "14px", color: "#666" }}>no posts yet.</p>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "14px" }}>
+          {posts.map((post) => (
+            <div key={post.slug}>
+              <Link
+                href={`/blog/${post.slug}`}
+                style={{ color: "#6699ff", textDecoration: "underline" }}
               >
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group flex items-start justify-between gap-4 py-4 transition-opacity hover:opacity-60"
-                >
-                  <div className="flex flex-col gap-1">
-                    <span
-                      className="text-sm leading-snug text-foreground"
-                      style={{ fontWeight: 500 }}
-                    >
-                      {post.title}
-                    </span>
-                    {post.excerpt && (
-                      <span
-                        className="text-xs leading-relaxed"
-                        style={{ color: "var(--muted-foreground)" }}
-                      >
-                        {post.excerpt}
-                      </span>
-                    )}
-                  </div>
-                  <span
-                    className="shrink-0 text-[10px] tracking-widest uppercase pt-0.5"
-                    style={{ color: "var(--muted-foreground)" }}
-                  >
-                    {formatDate(post.published_at)}
-                  </span>
-                </Link>
-              </li>
-            ))
-          )}
-        </ul>
-
-        {/* Footer */}
-        <div
-          className="home-fadein mt-8 text-[10px] tracking-widest uppercase"
-          style={{
-            color: "var(--muted-foreground)",
-            animationDelay: `${80 + (posts.length + 1) * 80}ms`,
-          }}
-        >
-          © {new Date().getFullYear()}
+                {post.title}
+              </Link>
+              <span style={{ color: "#666" }}> - {formatDate(post.published_at)}</span>
+              {post.excerpt && (
+                <p style={{ color: "#888", marginLeft: "16px", marginTop: "2px" }}>
+                  {post.excerpt}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
-      </div>
-
-      <style>{`
-        @keyframes homeFadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .home-fadein {
-          opacity: 0;
-          animation: homeFadeIn 0.35s ease forwards;
-        }
-      `}</style>
-    </div>
+      )}
+    </RetroLayout>
   );
 }

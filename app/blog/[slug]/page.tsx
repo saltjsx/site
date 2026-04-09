@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { RetroLayout, RetroHr } from "../../components/RetroLayout";
 import { zenblog } from "@/lib/zenblog";
-
-const ACCENT = "#FB5130";
 
 function formatDate(dateStr: string) {
   const date = new Date(dateStr);
@@ -12,6 +10,12 @@ function formatDate(dateStr: string) {
     month: "long",
     day: "numeric",
   });
+}
+
+function estimateReadTime(html: string) {
+  const text = html.replace(/<[^>]*>/g, "");
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
 }
 
 export default async function BlogPost({
@@ -29,183 +33,184 @@ export default async function BlogPost({
     notFound();
   }
 
+  const readTime = estimateReadTime(post.html_content);
+
   return (
-    <div className="flex min-h-screen justify-center px-10 py-16">
-      <div className="w-full max-w-2xl">
+    <RetroLayout>
+      <div style={{ maxWidth: "640px" }}>
         {/* Back link */}
-        <div
-          className="home-fadein mb-8"
-          style={{ animationDelay: "0ms" }}
-        >
+        <div style={{ marginBottom: "24px" }}>
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1 text-[10px] tracking-widest uppercase transition-opacity hover:opacity-60"
-            style={{ color: "var(--muted-foreground)" }}
+            style={{ color: "#6699ff", textDecoration: "underline", fontSize: "12px" }}
           >
-            <ArrowLeft size={10} weight="bold" />
-            blog
+            &lt;&lt; back to blog
           </Link>
         </div>
 
-        {/* Post header */}
-        <div
-          className="home-fadein mb-6"
-          style={{ animationDelay: "80ms" }}
-        >
-          <h1
-            className="text-sm font-medium leading-snug text-foreground"
-          >
-            {post.title}
-          </h1>
-          <div
-            className="mt-2 text-[10px] tracking-widest uppercase"
-            style={{ color: "var(--muted-foreground)" }}
-          >
-            {formatDate(post.published_at)}
-            {post.tags && post.tags.length > 0 && (
-              <>
-                {" · "}
-                {post.tags.map((t) => t.name).join(", ")}
-              </>
-            )}
-          </div>
+        {/* Title */}
+        <h1 style={{ color: "#fff", fontSize: "20px", fontWeight: 700, lineHeight: 1.4, marginBottom: "12px" }}>
+          {post.title}
+        </h1>
+
+        {/* Meta */}
+        <div style={{ color: "#666", fontSize: "12px", marginBottom: "8px", display: "flex", gap: "12px" }}>
+          <span>{formatDate(post.published_at)}</span>
+          <span>~{readTime} min read</span>
+          {post.tags && post.tags.length > 0 && (
+            <span>{post.tags.map((t) => t.name).join(", ")}</span>
+          )}
         </div>
 
-        {/* Divider */}
-        <div
-          className="home-fadein mb-6 border-t border-border"
-          style={{ animationDelay: "120ms" }}
-        />
+        {/* Excerpt */}
+        {post.excerpt && (
+          <p style={{ color: "#999", fontSize: "14px", lineHeight: 1.6, marginBottom: "8px", fontStyle: "italic" }}>
+            {post.excerpt}
+          </p>
+        )}
 
-        {/* Post content */}
+        <RetroHr />
+
+        {/* Content */}
         <div
-          className="home-fadein prose-zout"
-          style={{ animationDelay: "160ms" }}
+          className="retro-prose"
           dangerouslySetInnerHTML={{ __html: post.html_content }}
         />
 
-        {/* Footer */}
-        <div
-          className="home-fadein mt-12 text-[10px] tracking-widest uppercase"
-          style={{
-            color: "var(--muted-foreground)",
-            animationDelay: "240ms",
-          }}
-        >
-          © {new Date().getFullYear()}
+        <RetroHr />
+
+        {/* Footer nav */}
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", marginTop: "8px" }}>
+          <Link
+            href="/blog"
+            style={{ color: "#6699ff", textDecoration: "underline" }}
+          >
+            &lt;&lt; all posts
+          </Link>
+          <a
+            href="#"
+            style={{ color: "#666", textDecoration: "underline" }}
+          >
+            back to top
+          </a>
         </div>
       </div>
 
       <style>{`
-        @keyframes homeFadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(6px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .retro-prose {
+          font-size: 15px;
+          line-height: 1.9;
+          color: #d0d0d0;
+          letter-spacing: 0.01em;
         }
-        .home-fadein {
-          opacity: 0;
-          animation: homeFadeIn 0.35s ease forwards;
+        .retro-prose p {
+          margin-bottom: 20px;
         }
-
-        /* Blog post content styling — matches app's monospace/minimal aesthetic */
-        .prose-zout {
-          font-size: 0.875rem;
-          line-height: 1.75;
-          color: var(--foreground);
-        }
-        .prose-zout p {
-          margin-bottom: 1rem;
-        }
-        .prose-zout p:last-child {
-          margin-bottom: 0;
-        }
-        .prose-zout h1,
-        .prose-zout h2,
-        .prose-zout h3,
-        .prose-zout h4 {
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          margin-top: 1.75rem;
-          margin-bottom: 0.5rem;
-          color: var(--foreground);
-        }
-        .prose-zout h1 { font-size: 1rem; }
-        .prose-zout h2 { font-size: 0.9375rem; }
-        .prose-zout h3, .prose-zout h4 { font-size: 0.875rem; }
-        .prose-zout a {
-          color: ${ACCENT};
-          text-decoration: underline;
-          text-underline-offset: 3px;
-          text-decoration-color: ${ACCENT};
-          transition: opacity 0.15s ease;
-        }
-        .prose-zout a:hover {
-          opacity: 0.6;
-        }
-        .prose-zout strong {
+        .retro-prose p:last-child { margin-bottom: 0; }
+        .retro-prose h1 {
+          color: #fff;
           font-weight: 700;
-          color: var(--foreground);
+          font-size: 18px;
+          margin-top: 36px;
+          margin-bottom: 12px;
         }
-        .prose-zout em {
-          font-style: italic;
+        .retro-prose h2 {
+          color: #fff;
+          font-weight: 700;
+          font-size: 16px;
+          margin-top: 32px;
+          margin-bottom: 10px;
         }
-        .prose-zout code {
-          font-family: inherit;
-          font-size: 0.8125rem;
-          background: var(--muted);
-          color: ${ACCENT};
-          padding: 0.1em 0.35em;
+        .retro-prose h3, .retro-prose h4 {
+          color: #eee;
+          font-weight: 600;
+          font-size: 15px;
+          margin-top: 28px;
+          margin-bottom: 8px;
+        }
+        .retro-prose a {
+          color: #6699ff;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+        .retro-prose a:hover { color: #88bbff; }
+        .retro-prose strong { color: #fff; font-weight: 700; }
+        .retro-prose em { font-style: italic; color: #ccc; }
+        .retro-prose code {
+          font-family: var(--font-geist-mono), monospace;
+          font-size: 13px;
+          color: #00cc00;
+          background: #111;
+          padding: 0.15em 0.4em;
           border-radius: 3px;
+          border: 1px solid #222;
         }
-        .prose-zout pre {
-          background: var(--sidebar);
-          border: 1px solid var(--border);
-          border-radius: 4px;
-          padding: 1rem;
+        .retro-prose pre {
+          background: #0a0a0a;
+          border: 1px solid #333;
+          border-left: 3px solid #6699ff;
+          padding: 16px;
           overflow-x: auto;
-          margin-bottom: 1rem;
-          font-size: 0.8125rem;
-          line-height: 1.6;
+          margin: 24px 0;
+          font-size: 13px;
+          line-height: 1.7;
         }
-        .prose-zout pre code {
+        .retro-prose pre code {
           background: none;
-          color: var(--foreground);
-          padding: 0;
-        }
-        .prose-zout ul,
-        .prose-zout ol {
-          margin-bottom: 1rem;
-          padding-left: 1.25rem;
-        }
-        .prose-zout ul { list-style-type: disc; }
-        .prose-zout ol { list-style-type: decimal; }
-        .prose-zout li {
-          margin-bottom: 0.25rem;
-        }
-        .prose-zout blockquote {
-          border-left: 2px solid ${ACCENT};
-          padding-left: 1rem;
-          margin-left: 0;
-          margin-bottom: 1rem;
-          color: var(--muted-foreground);
-          font-style: italic;
-        }
-        .prose-zout img {
-          max-width: 100%;
-          border-radius: 4px;
-          margin: 1rem 0;
-        }
-        .prose-zout hr {
           border: none;
-          border-top: 1px solid var(--border);
-          margin: 1.5rem 0;
+          padding: 0;
+          color: #d0d0d0;
+        }
+        .retro-prose ul, .retro-prose ol {
+          margin-bottom: 20px;
+          padding-left: 24px;
+        }
+        .retro-prose ul { list-style-type: disc; }
+        .retro-prose ol { list-style-type: decimal; }
+        .retro-prose li {
+          margin-bottom: 8px;
+          line-height: 1.7;
+        }
+        .retro-prose li::marker { color: #666; }
+        .retro-prose blockquote {
+          border-left: 3px solid #6699ff;
+          padding: 12px 16px;
+          margin: 24px 0;
+          background: #0a0a0a;
+          color: #999;
+          font-style: italic;
+          line-height: 1.7;
+        }
+        .retro-prose blockquote p { margin-bottom: 8px; }
+        .retro-prose blockquote p:last-child { margin-bottom: 0; }
+        .retro-prose img {
+          max-width: 100%;
+          margin: 24px 0;
+          border: 1px solid #333;
+        }
+        .retro-prose hr {
+          border: none;
+          border-top: 1px dashed #444;
+          margin: 32px 0;
+        }
+        .retro-prose table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 24px 0;
+          font-size: 13px;
+        }
+        .retro-prose th {
+          border-bottom: 1px solid #444;
+          padding: 8px 12px;
+          text-align: left;
+          color: #fff;
+          font-weight: 600;
+        }
+        .retro-prose td {
+          border-bottom: 1px solid #222;
+          padding: 8px 12px;
         }
       `}</style>
-    </div>
+    </RetroLayout>
   );
 }

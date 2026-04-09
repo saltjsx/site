@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/ThemeProvider";
-import Sidebar from "./components/Sidebar";
+import { LayoutShell } from "./components/LayoutShell";
 import { Agentation } from "agentation";
 import { Databuddy } from "@databuddy/sdk/react";
 
@@ -30,10 +30,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
-          <Sidebar />
-          <main className="ml-28 min-h-screen">
+          <LayoutShell>
             {children}
-          </main>
+          </LayoutShell>
           {process.env.NODE_ENV === "development" && <Agentation />}
           <Databuddy clientId="rALU52_genirbSWfxdhia" trackWebVitals trackErrors />
         </ThemeProvider>

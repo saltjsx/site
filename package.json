@@ -12,6 +12,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@react-three/fiber": "^9.6.0",
     "@react-three/postprocessing": "^3.0.4",
+    "@vercel/analytics": "^2.0.1",
     "agentation": "^3.0.2",
     "geist": "^1.7.0",
     "motion": "^12.38.0",

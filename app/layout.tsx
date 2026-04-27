@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
-import { ThemeProvider } from "./components/ThemeProvider";
-import { LayoutShell } from "./components/LayoutShell";
+import { ThemeProvider } from "./components/theme-provider";
+import { Navbar } from "./components/navbar";
 import { Agentation } from "agentation";
-import { Databuddy } from "@databuddy/sdk/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "salt",
-  description: "Personal site",
+  title: "saltjsx",
+  description: "saltjsx",
 };
 
 export default function RootLayout({
@@ -27,14 +27,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <LayoutShell>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} h-full antialiased`}
+    >
+      <body className="min-h-full">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="mx-auto flex min-h-screen max-w-6xl flex-col border-x border-border">
+            <Navbar />
             {children}
-          </LayoutShell>
+          </div>
           {process.env.NODE_ENV === "development" && <Agentation />}
-          <Databuddy clientId="rALU52_genirbSWfxdhia" trackWebVitals trackErrors />
         </ThemeProvider>
       </body>
     </html>

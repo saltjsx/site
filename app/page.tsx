@@ -1,65 +1,69 @@
 "use client";
 
-import { RetroLayout, RetroLink } from "./components/RetroLayout";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import { motion } from "motion/react";
+import Dither from "./components/Dither";
 
-// Generated with: figlet.textSync('saltjsx', { font: 'ANSI Shadow' })
-const ASCII_ART = `
-███████╗ █████╗ ██╗  ████████╗  ██╗███████╗██╗  ██╗
-██╔════╝██╔══██╗██║  ╚══██╔══╝  ██║██╔════╝╚██╗██╔╝
-███████╗███████║██║     ██║     ██║███████╗ ╚███╔╝
-╚════██║██╔══██║██║     ██║██   ██║╚════██║ ██╔██╗
-███████║██║  ██║███████╗██║╚█████╔╝███████║██╔╝ ██╗
-╚══════╝╚═╝  ╚═╝╚══════╝╚═╝ ╚════╝ ╚══════╝╚═╝  ╚═╝
-`.trimStart();
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Home() {
+  const { resolvedTheme } = useTheme();
+  const bgColor: [number, number, number] =
+    resolvedTheme === "light" ? [1, 1, 1] : [0, 0, 0];
+
   return (
-    <RetroLayout>
-      {/* ASCII banner with diagonal shimmer */}
-      <pre className="ascii-shimmer" style={{ fontSize: "14px", lineHeight: 1.2, marginBottom: "24px" }}>
-        {ASCII_ART}
-      </pre>
+    <main className="relative flex-1 overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.02 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease }}
+        className="absolute inset-0"
+      >
+        <Dither
+          waveColor={[0.047058823529411764, 0.3137254901960784, 1]}
+          bgColor={bgColor}
+          disableAnimation={false}
+          enableMouseInteraction={false}
+          mouseRadius={0.3}
+          colorNum={4.3}
+          waveAmplitude={0.3}
+          waveFrequency={3}
+          waveSpeed={0.25}
+        />
+      </motion.div>
 
-      <style>{`
-        .ascii-shimmer {
-          color: #888;
-          background: linear-gradient(
-            120deg,
-            #888 0%,
-            #888 25%,
-            #fff 40%,
-            #fff 45%,
-            #888 60%,
-            #888 100%
-          );
-          background-size: 200% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shimmer 4s linear infinite;
-        }
-        @keyframes shimmer {
-          0% { background-position: 200% 50%; }
-          100% { background-position: -200% 50%; }
-        }
-      `}</style>
+      <div className="absolute bottom-0 left-0 z-10 flex flex-col items-start px-8 py-12 text-left sm:px-16 sm:py-20">
+        <h1 className="font-pixel text-7xl leading-none lowercase tracking-wide text-[#1c1c1c] sm:text-9xl md:text-[10rem] dark:text-[#eeeeee]">
+          saltjsx
+        </h1>
 
-      <hr style={{ border: "none", borderTop: "1px dashed #444", margin: "16px 0" }} />
+        <h2 className="mt-4 font-pixel text-3xl lowercase tracking-wide text-[#1c1c1c]/80 sm:text-5xl dark:text-[#eeeeee]/80">
+          dev &amp; designer
+        </h2>
 
-      {/* Bio */}
-      <div style={{ fontSize: "14px", lineHeight: 1.7 }}>
-        <p>heyo, i&apos;m <span style={{ color: "#ff6644", fontWeight: 700 }}>salt</span></p>
-        <p>
-          currently cto @ <RetroLink href="https://clovr.dev">clovr</RetroLink>
+        <p className="mt-8 max-w-xl text-xl text-[#1c1c1c]/90 sm:text-2xl dark:text-[#eeeeee]/90">
+          i&apos;m salt, a web dev and designer from{" "}
+          <span aria-label="Australia" role="img">
+            🇦🇺
+          </span>
         </p>
-        <p>
-          also working on <RetroLink href="https://tryportal.app">portal</RetroLink> on the side
-        </p>
-        <p>based in Australia, from USA</p>
-        <p>
-          <RetroLink href="https://x.com/saltjsx">twitter</RetroLink> is probably the best way to reach me
-        </p>
+
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Link
+            href="/about"
+            className="border border-[#1c1c1c] bg-transparent px-7 py-3.5 text-base text-[#1c1c1c] transition-colors hover:bg-[#1c1c1c] hover:text-[#eeeeee] sm:text-lg dark:border-[#eeeeee] dark:text-[#eeeeee] dark:hover:bg-[#eeeeee] dark:hover:text-[#1c1c1c]"
+          >
+            About Me
+          </Link>
+          <Link
+            href="/design"
+            className="border border-[#0c50ff] bg-[#0c50ff] px-7 py-3.5 text-base text-[#eeeeee] transition-colors hover:bg-transparent hover:text-[#0c50ff] sm:text-lg"
+          >
+            Design
+          </Link>
+        </div>
       </div>
-    </RetroLayout>
+    </main>
   );
 }

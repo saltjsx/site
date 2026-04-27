@@ -1,35 +1,50 @@
-import { RetroLayout } from "../components/RetroLayout";
+import { SiDiscord, SiGithub, SiX, SiYoutube } from "react-icons/si";
 
 const links = [
-  { label: "github", href: "https://github.com/saltjsx", description: "find my code here" },
-  { label: "twitter", href: "https://x.com/saltjsx", description: "idk follow me i guess" },
-  { label: "youtube", href: "https://youtube.com/@saltjsx", description: "i make videos(sometimes)" },
-  { label: "portal", href: "https://tryportal.app/dm/salt", description: "you can message me here as well" },
-  { label: "discord", href: "https://clovr.dev/discord", description: "the clovr discord community" },
-];
+  {
+    name: "twitter",
+    href: "/x",
+    Icon: SiX,
+  },
+  {
+    name: "github",
+    href: "/github",
+    Icon: SiGithub,
+  },
+  {
+    name: "youtube",
+    href: "/youtube",
+    Icon: SiYoutube,
+  },
+  {
+    name: "discord",
+    href: "/discord",
+    Icon: SiDiscord,
+  },
+] as const;
 
 export default function Links() {
   return (
-    <RetroLayout>
-      <h1 style={{ color: "#fff", fontSize: "16px", marginBottom: "16px" }}>
-        &gt;&gt; links
+    <main className="relative flex-1 px-8 py-16 sm:px-16 sm:py-24">
+      <h1 className="font-pixel text-6xl leading-none lowercase tracking-wide text-foreground sm:text-8xl">
+        Links
       </h1>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "14px" }}>
-        {links.map((link) => (
-          <div key={link.href}>
+      <ul className="mt-10 max-w-2xl divide-y divide-border border-y border-border">
+        {links.map(({ name, href, Icon }) => (
+          <li key={name}>
             <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#6699ff", textDecoration: "underline" }}
+              href={href}
+              className="group flex items-center gap-4 px-1 py-5 text-lg text-foreground/90 transition-colors hover:bg-[#0c50ff] hover:text-[#eeeeee] sm:text-xl"
             >
-              {link.label}
+              <span className="inline-flex items-center gap-3">
+                <Icon className="inline-block h-5 w-5 sm:h-6 sm:w-6" />
+                {name}
+              </span>
             </a>
-            <span style={{ color: "#666" }}> - {link.description}</span>
-          </div>
+          </li>
         ))}
-      </div>
-    </RetroLayout>
+      </ul>
+    </main>
   );
 }

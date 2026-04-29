@@ -31,7 +31,7 @@ export default function About() {
         </p>
 
         <p>
-          i&apos;m the cto of{" "}
+          prev. cto of{" "}
           <a
             href="https://clovrlabs.co"
             target="_blank"
